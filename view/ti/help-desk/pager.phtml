@@ -1,6 +1,6 @@
 <?php
 
-$url = $this->url('helpdesk/helpdesk-page',array('setor'=>$setor));
+$url = $this->url('ti/helpdesk/helpdesk-page',array('setor'=>$setor));
 
 ?>
    
@@ -19,7 +19,7 @@ $url = $this->url('helpdesk/helpdesk-page',array('setor'=>$setor));
                 <?php if ($page != $this->current): ?>
                   <li>   <a  href="<?php echo $url . '/' . $page; ?>">
                         <?php echo $page; ?>
-                    </a>&nbsp;</li>
+                    </a></li>
                 <?php else: ?>
                      <li class="active">
                         <a><?php echo $page; ?></a>
@@ -31,7 +31,7 @@ $url = $this->url('helpdesk/helpdesk-page',array('setor'=>$setor));
               <li>  <a   href="<?php echo $url . '/' . $this->next; ?>">Próx</a></li>
                
             <?php else: ?>      	
-                 <li class="disabled"><a>Próx</a></a>    
+                 <li class="disabled"><a>Próx</a>
             <?php endif; ?>
          </ul>
     </div>
