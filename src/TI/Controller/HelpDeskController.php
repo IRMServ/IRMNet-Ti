@@ -186,7 +186,7 @@ class HelpDeskController extends AbstractActionController {
 
                 $renderer = $this->getServiceLocator()->get('ViewRenderer');
 
-                $content = $renderer->render('helpdesk/index/email-abertura-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $author['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $chamado->getDescricao()));
+                $content = $renderer->render('ti/help-desk/email-abertura-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $author['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $chamado->getDescricao()));
                 $mimehtml = new MimeType($content);
                 $mimehtml->type = Mime::TYPE_HTML;
 
@@ -291,7 +291,7 @@ class HelpDeskController extends AbstractActionController {
                 $this->getEntityManager()->persist($resposta);
                 $this->getEntityManager()->flush();
                 $renderer = $this->getServiceLocator()->get('ViewRenderer');
-                $content = $renderer->render('helpdesk/index/email-resposta-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
+                $content = $renderer->render('ti/help-desk/email-resposta-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
                 $mimehtml = new MimeType($content);
                 $mimehtml->type = Mime::TYPE_HTML;
 
@@ -359,7 +359,7 @@ class HelpDeskController extends AbstractActionController {
             $this->getEntityManager()->merge($chamado);
             $this->getEntityManager()->flush();
             $renderer = $this->getServiceLocator()->get('ViewRenderer');
-            $content = $renderer->render('helpdesk/index/email-fechar-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo()));
+            $content = $renderer->render('ti/help-desk/email-fechar-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo()));
             $mimehtml = new MimeType($content);
             $mimehtml->type = Mime::TYPE_HTML;
 
