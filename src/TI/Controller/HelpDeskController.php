@@ -375,7 +375,7 @@ class HelpDeskController extends AbstractActionController {
 
             $mail->send();
 
-            return $this->redirect()->toRoute('helpdesk', array('setor' => $post['setor']));
+            return $this->redirect()->toRoute('ti/helpdesk');
         }
         return new ViewModel(array('chamado' => $chamado, 'setor' => $setor));
     }
