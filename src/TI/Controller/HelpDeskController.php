@@ -107,7 +107,7 @@ class HelpDeskController extends AbstractActionController {
         $categorias = array();
 
 
-        $form->setAttribute('action', "/helpdesk/{$setor->getIdsetor()}/open");
+        $form->setAttribute('action', "/ti/helpdesk/{$setor->getIdsetor()}/open");
         $form->setAttribute('enctype', 'multipart/form-data');
 
         foreach ($categoriachamado as $cc) {
@@ -188,9 +188,7 @@ class HelpDeskController extends AbstractActionController {
 
                 $content = $renderer->render('ti/help-desk/email-abertura-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $author['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $chamado->getDescricao()));
                 $mimehtml = new MimeType($content);
-                $mimehtml->type = Mime::TYPE_HTML;
 
-                $mimehtml->charset = 'UTF-8';
                 $message = new Message();
 
                 $message->addPart($mimehtml);
@@ -201,10 +199,14 @@ class HelpDeskController extends AbstractActionController {
                         ->addTo($setor->getEmail())
                         ->setSubject("[chamado aberto] {$chamado->getTitulo()}")
                         ->setBody($message);
+                $headers = $mail->getHeaders();
+                $headers->removeHeader('Content-Type');
+                $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
+                $mail->setHeaders($headers);
 
                 $mail->send();
                 $this->flashMessenger()->addMessage('As informações foram registradas.');
-                return $this->redirect()->toRoute('helpdesk', array('setor' => $setor->getIdsetor()));
+                return $this->redirect()->toRoute('ti/helpdesk', array('setor' => $setor->getIdsetor()));
             } else {
                 Debug::dump($form->getMessages());
             }
@@ -293,7 +295,7 @@ class HelpDeskController extends AbstractActionController {
                 $renderer = $this->getServiceLocator()->get('ViewRenderer');
                 $content = $renderer->render('ti/help-desk/email-resposta-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
                 $mimehtml = new MimeType($content);
-                $mimehtml->type = Mime::TYPE_HTML;
+
 
                 $message = new Message();
                 $message->addPart($mimehtml);
@@ -304,9 +306,13 @@ class HelpDeskController extends AbstractActionController {
                         ->addTo($setor->getEmail())
                         ->setSubject("[resposta chamado] {$chamado->getTitulo()}")
                         ->setBody($message);
+                $headers = $mail->getHeaders();
+                $headers->removeHeader('Content-Type');
+                $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
+                $mail->setHeaders($headers);
 
                 $mail->send();
-                $this->redirect()->toRoute('helpdesk/chamado', array('chamado' => $id, 'setor' => $setor->getIdsetor()));
+                $this->redirect()->toRoute('ti/helpdesk/chamado', array('chamado' => $id, 'setor' => $setor->getIdsetor()));
             }
         }
         return array('form' => $form, 'user' => $store);
@@ -315,7 +321,7 @@ class HelpDeskController extends AbstractActionController {
     public function changeprioridadeAction() {
 
         $view = new ViewModel();
-        $view->setTerminal(true)->setTemplate('helpdesk/index/changeprioridade');
+        $view->setTerminal(true)->setTemplate('ti/help-desk/changeprioridade');
         $this->getServiceLocator()->get('viewrenderer')->render($view);
         $post = $this->getRequest()->getPost();
 
@@ -372,10 +378,14 @@ class HelpDeskController extends AbstractActionController {
                     ->addTo($setor->getEmail())
                     ->setSubject("[Chamado fechado] {$chamado->getTitulo()}")
                     ->setBody($message);
+            $headers = $mail->getHeaders();
+            $headers->removeHeader('Content-Type');
+            $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
+            $mail->setHeaders($headers);
 
             $mail->send();
 
-            return $this->redirect()->toRoute('ti/helpdesk');
+            return $this->redirect()->toRoute('ti/helpdesk', array('setor' => $post['setor']));
         }
         return new ViewModel(array('chamado' => $chamado, 'setor' => $setor));
     }
@@ -397,7 +407,7 @@ class HelpDeskController extends AbstractActionController {
             $this->getEntityManager()->flush();
 
 
-            return $this->redirect()->toRoute('helpdesk', array('setor' => $post['setor']));
+            return $this->redirect()->toRoute('ti/helpdesk', array('setor' => $post['setor']));
         }
         return new ViewModel(array('chamado' => $chamado, 'setor' => $setor));
     }
