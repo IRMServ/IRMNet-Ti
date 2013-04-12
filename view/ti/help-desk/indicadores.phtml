@@ -1,0 +1,45 @@
+<div class="row-fluid">
+
+    <div class="span3">
+        <ul class="nav nav-list">
+            <li class="nav-header">HelpDesk</li>
+            <li><a href="<?php echo $this->url('ti/helpdesk'); ?>">Página principal</a></li>
+            <li class="active"><a href="<?php echo $this->url('ti/helpdesk/indicadores'); ?>">Indicadores</a></li>
+        </ul>
+
+    </div>
+    <div class="span9">        
+        <table class="table table-bordered">
+            <thead>
+            <th>Total de chamados</th>
+            <th>Média total</th>
+            <th>Chamados não avaliados</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><?php echo $this->total_chamados; ?></td>
+                    <td><?php echo $this->media; ?></td>
+                    <td><?php echo $this->chamados_na; ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+            <th>Chamado</th>
+            <th>Finalizado</th>
+            <th>Autor</th>
+            </thead>
+            <tbody>
+                <?php foreach($this->chamados as $chamado):?>
+                <tr>
+                    <td><a href="<?php echo $this->url('ti/helpdesk/chamado',array('chamado'=>$chamado->getIdchamado())); ?>"><?php echo $chamado->getTitulo(); ?></a></td>
+                    <td><?php echo $chamado->getDatafim(); ?></td>
+                    <td><?php echo $chamado->getAutor(); ?></td>
+                </tr>
+                 <?php endforeach;?>
+               
+            </tbody>
+        </table>
+        
+    </div>
+</div>

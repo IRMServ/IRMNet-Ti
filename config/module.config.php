@@ -107,6 +107,17 @@ return array(
                                     ),
                                 ),
                             ),
+                            'indicadores' => array(
+                                'type' => 'Literal',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/indicadores',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\HelpDesk',
+                                        'action' => 'indicadores',
+                                    ),
+                                ),
+                            ),
                             'chamado-resposta' => array(
                                 'type' => 'Segment',
                                 'may_terminate' => true,
@@ -123,291 +134,10 @@ return array(
                             ),
                         )
                     ),
-//                    'setor' => array(
-//                        'type' => 'Literal',
-//                        'options' => array(
-//                            'route' => '/setor',
-//                            'defaults' => array(
-//                                'controller' => 'TI\Controller\Setor',
-//                                'action' => 'index',
-//                            ),
-//                        ),
-//                        'may_terminate' => true,
-//                        'child_routes' => array(
-//                            'store' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/store[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'store',
-//                                    ),
-//                                ),
-//                            ),
-//                            'delete' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/delete[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'delete',
-//                                    ),
-//                                ),
-//                            ),
-//                            'setor-page' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/page[/:page]',
-//                                    'constraints' => array(
-//                                        'page' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'index',
-//                                        'page' => 1
-//                                    ),
-//                                ),
-//                            ),
-//                        )
-//                    ),
-//                    'status-chamado' => array(
-//                        'type' => 'Literal',
-//                        'options' => array(
-//                            'route' => '/status-chamado',
-//                            'defaults' => array(
-//                                'controller' => 'TI\Controller\StatusChamado',
-//                                'action' => 'index',
-//                            ),
-//                        ),
-//                        'may_terminate' => true,
-//                        'child_routes' => array(
-//                            'store' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/store[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'store',
-//                                    ),
-//                                ),
-//                            ),
-//                            'delete' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/delete[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'delete',
-//                                    ),
-//                                ),
-//                            ),
-//                            'status-chamado-page' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/page[/:page]',
-//                                    'constraints' => array(
-//                                        'page' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'index',
-//                                        'page' => 1
-//                                    ),
-//                                ),
-//                            ),
-//                        )
-//                    ),
-//                    'prioridade-chamado' => array(
-//                        'type' => 'Literal',
-//                        'options' => array(
-//                            'route' => '/prioridade-chamado',
-//                            'defaults' => array(
-//                                'controller' => 'TI\Controller\PrioridadeChamado',
-//                                'action' => 'index',
-//                            ),
-//                        ),
-//                        'may_terminate' => true,
-//                        'child_routes' => array(
-//                            'store' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/store[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'store',
-//                                    ),
-//                                ),
-//                            ),
-//                            'delete' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/delete[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'delete',
-//                                    ),
-//                                ),
-//                            ),
-//                            'prioridade-page' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/page[/:page]',
-//                                    'constraints' => array(
-//                                        'page' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'index',
-//                                        'page' => 1
-//                                    ),
-//                                ),
-//                            ),
-//                        )
-//                    ),
-//                    'status-chamado' => array(
-//                        'type' => 'Literal',
-//                        'options' => array(
-//                            'route' => '/status-chamado',
-//                            'defaults' => array(
-//                                'controller' => 'TI\Controller\StatusChamado',
-//                                'action' => 'index',
-//                            ),
-//                        ),
-//                        'may_terminate' => true,
-//                        'child_routes' => array(
-//                            'store' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/store[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'store',
-//                                    ),
-//                                ),
-//                            ),
-//                            'delete' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/delete[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'delete',
-//                                    ),
-//                                ),
-//                            ),
-//                            'status-chamado-page' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/page[/:page]',
-//                                    'constraints' => array(
-//                                        'page' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'index',
-//                                        'page' => 1
-//                                    ),
-//                                ),
-//                            ),
-//                        )
-//                    ),
-//                    'categoria-chamado' => array(
-//                        'type' => 'Literal',
-//                        'options' => array(
-//                            'route' => '/categoria-chamado',
-//                            'defaults' => array(
-//                                'controller' => 'TI\Controller\categoriaChamado',
-//                                'action' => 'index',
-//                            ),
-//                        ),
-//                        'may_terminate' => true,
-//                        'child_routes' => array(
-//                            'store' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/store[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'store',
-//                                    ),
-//                                ),
-//                            ),
-//                            'delete' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/delete[/:id]',
-//                                    'constraints' => array(
-//                                        'id' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'delete',
-//                                    ),
-//                                ),
-//                            ),
-//                            'categoria-chamado-page' => array(
-//                                'type' => 'Segment',
-//                                'may_terminate' => true,
-//                                'options' => array(
-//                                    'route' => '/page[/:page]',
-//                                    'constraints' => array(
-//                                        'page' => '[0-9]+'
-//                                    ),
-//                                    'defaults' => array(
-//                                        'action' => 'index',
-//                                        'page' => 1
-//                                    ),
-//                                ),
-//                            ),
-//                        )
-//                    ),
                 )
             ),
         ),
     ),
-//    'router' => array(
-//        'routes' => array(
-//            'ti' => array(
-//                'type' => 'Literal',
-//                'options' => array(
-//                    'route' => '/ti',
-//                    'defaults' => array(
-//                       
-//                        'controller' => 'TI\Controller\Index',
-//                        'action' => 'index',
-//                    ),
-//                ),
-//                
-//            ),
-//        ),
-//    ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions' => true,
@@ -423,7 +153,7 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
-    ),    
+    ),
 //        'navigation' =>
 //    
 //    array(

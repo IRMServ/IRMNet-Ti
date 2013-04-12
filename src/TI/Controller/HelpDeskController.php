@@ -412,24 +412,20 @@ class HelpDeskController extends AbstractActionController {
         return new ViewModel(array('chamado' => $chamado, 'setor' => $setor));
     }
 
-    public function mailAction() {
-        $renderer = $this->getServiceLocator()->get('ViewRenderer');
-
-
-
-        $content = $renderer->render('helpdesk/index/email.phtml', array('url' => 'google.com.br', 'name' => 'teste'));
-        $mimehtml = new MimeType($content);
-        $mimehtml->type = Mime::TYPE_HTML;
-        $message = new Message();
-        $message->addPart($mimehtml);
-
-        $mail = new Mail($this->getServiceLocator());
-        $mail->addFrom('webmaster@irmserv.com.br')
-                ->addTo('igor.carvalho@irmserv.com.br')
-                ->setSubject('teste mail service')
-                ->setBody($message);
-
-        $mail->send();
+   
+    
+      public function indicadoresAction() {
+        $em = $this->getEntityManager();
+        $setor = $this->params()->fromRoute('setor');
+        
+        $query = $em->createQuery("SELECT sum(Chamado.nota) as notas  FROM Helpdesk\Entity\Chamado Chamado where Chamado.setor_destino_fk={$setor}");
+        $notas = $query->getResult();
+        $chamados = $this->getEntityManager()->getRepository('Helpdesk\Entity\Chamado')->findBy(array('setor_destino_fk'=>$setor), array('idchamado' => 'desc'));
+        $chamados_nn = $this->getEntityManager()->getRepository('Helpdesk\Entity\Chamado')->findBy(array('nota' => 0,'setor_destino_fk'=>$setor), array('idchamado' => 'desc'));
+       
+        $media = count($chamados) != 0 ? $notas[0]['notas'] / count($chamados):0;
+        
+        return new ViewModel(array('media'=>number_format($media,2,'.',','),'chamados'=>$chamados_nn,'total_chamados'=>count($chamados),'chamados_na'=>count($chamados_nn)));
     }
 
 }
