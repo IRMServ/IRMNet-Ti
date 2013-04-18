@@ -1,0 +1,45 @@
+<div class="row-fluid">
+
+    <div class="span3">
+        <ul class="nav nav-list">
+            <li class="nav-header">HelpDesk</li>
+            <li><a href="<?php echo $this->url('ti/helpdesk'); ?>">Página principal</a></li>
+            <li class=""><a href="<?php echo $this->url('ti/helpdesk/indicadores'); ?>">Indicadores</a></li>
+            <li class="nav-header">Imressão</li>
+            <li><a href="<?php echo $this->url('ti/impressao/relatorio'); ?>">Relatório</a></li>
+        </ul>
+
+    </div>
+    <div class="span9">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>         
+                <tr>
+                    <th>Usuário</th>
+                    <th>Folhas Impressas</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($this->prints as $usuario => $impressoes): ?>
+                    <tr>
+                        <td><?php echo $usuario ?></td>
+                        <td><?php echo $impressoes ?></td>
+
+
+                    </tr>
+                <?php endforeach; ?>
+
+            </tbody>
+            <tfoot>
+                <tr  align="center">
+                    <td colspan="2">
+                        <a href="#" class="btn"><i class="icon-print"></i> Ordem Decrescente</a>
+                        <a href="#" class="btn"><i class="icon-print"></i> Ordem Crescente</a>
+                    </td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+    </div>
+</div>

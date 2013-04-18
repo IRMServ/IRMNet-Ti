@@ -1,21 +1,21 @@
 <div class="row-fluid">
 
     <div class="span3">
-        <ul class="nav nav-list">
+       <ul class="nav nav-list">
             <li class="nav-header">HelpDesk</li>
             <li><a href="<?php echo $this->url('ti/helpdesk'); ?>">Página principal</a></li>
-            <li class="active"><a href="<?php echo $this->url('ti/helpdesk/indicadores'); ?>">Indicadores</a></li>
+            <li class=""><a href="<?php echo $this->url('ti/helpdesk/indicadores'); ?>">Indicadores</a></li>
+            <li class="nav-header">Imressão</li>
+            <li><a href="<?php echo $this->url('ti/impressao/relatorio'); ?>">Relatório</a></li>
         </ul>
 
     </div>
     <div class="span9">        
         <table class="table table-bordered">
             <thead>
-                <tr>
-                     <th>Total de chamados</th>
+            <th>Total de chamados</th>
             <th>Média total</th>
             <th>Chamados não avaliados</th>
-                </tr>
             </thead>
             <tbody>
                 <tr>
