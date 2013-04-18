@@ -26,9 +26,9 @@ class ImpressaoController extends AbstractActionController {
         for ($i = 2; $i <= count($file); $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             if (isset($count[$User])) {
-                $count[$User] += $Pages;
+                $count[$User] += $Pages * $Copies;
             } else {
-                $count[$User] = $Pages;
+                $count[$User] = $Pages * $Copies;
             }
             if (empty($count[$User])) {
                 unset($count[$User]);
@@ -56,9 +56,9 @@ class ImpressaoController extends AbstractActionController {
         for ($i = 2; $i <= count($file); $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             if (isset($count[$User])) {
-                $count[$User] += $Pages;
+                $count[$User] += $Pages * $Copies;
             } else {
-                $count[$User] = $Pages;
+                $count[$User] = $Pages * $Copies;
             }
             if (empty($count[$User])) {
                 unset($count[$User]);
@@ -86,9 +86,9 @@ class ImpressaoController extends AbstractActionController {
         for ($i = 2; $i <= count($file); $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             if (isset($count[$User])) {
-                $count[$User] += $Pages;
+                $count[$User] += $Pages * $Copies;
             } else {
-                $count[$User] = $Pages;
+                $count[$User] = $Pages * $Copies;
             }
             if (empty($count[$User])) {
                 unset($count[$User]);
