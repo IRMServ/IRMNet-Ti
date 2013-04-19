@@ -22,8 +22,8 @@
             <tbody>
                 <?php foreach ($this->prints as $usuario => $impressoes): ?>
                     <tr>
+                        <td><?php echo substr($impressoes,1,strlen($impressoes)) ?></td>
                         <td><?php echo $usuario ?></td>
-                        <td><?php echo $impressoes ?></td>
 
 
                     </tr>
