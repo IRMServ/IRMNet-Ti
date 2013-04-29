@@ -1,11 +1,18 @@
 <?php
 
+namespace TI;
+
 return array(
     'controllers' => array(
         'invokables' => array(
             'TI\Controller\Index' => 'TI\Controller\IndexController',
             'TI\Controller\Impressao' => 'TI\Controller\ImpressaoController',
-            'TI\Controller\HelpDesk' => 'TI\Controller\HelpDeskController'
+            'TI\Controller\Fabricantes' => 'TI\Controller\FabricantesController',
+            'TI\Controller\HelpDesk' => 'TI\Controller\HelpDeskController',
+            'TI\Controller\Softwares' => 'TI\Controller\SoftwaresController',
+            'TI\Controller\Licencas' => 'TI\Controller\LicencasController',
+            'TI\Controller\Caracteristicas' => 'TI\Controller\CaracteristicasController',
+            'TI\Controller\TipoEquipamento' => 'TI\Controller\TipoEquipamentoController',
         ),
     ),
     'router' => array(
@@ -21,6 +28,125 @@ return array(
                     ),
                 ),
                 'child_routes' => array(
+                    'fabricantes' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/fabricantes',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\Fabricantes',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\Fabricantes',
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'tipo-equipamento' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/tipo-equipamento',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\TipoEquipamento',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\TipoEquipamento',
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'softwares' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/softwares',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\Softwares',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\Softwares',
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'licencas' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/licencas',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\Licencas',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\Licencas',
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'caracteristicas' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/caracteristicas',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\Caracteristicas',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
                     'helpdesk' => array(
                         'type' => 'segment',
                         'options' => array(
@@ -452,6 +578,20 @@ return array(
             ),
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            __NAMESPACE__ . '_driver' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                )
+            )
+        ),
+    ),
 //    'router' => array(
 //        'routes' => array(
 //            'ti' => array(
@@ -484,6 +624,33 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+    'service_manager'=>array(
+        'factories'=>array(
+            'FabricantesPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $s = $em->getRepository('TI\Entity\Fabricantes')->findAll();
+                $farray = array();
+                foreach($s as $f)
+                {
+                    $farray[$f->getIdfabricantes()] = $f->getFabricante();
+                }
+                return $farray;
+            },
+            'SoftwaresPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $s = $em->getRepository('TI\Entity\Softwares')->findAll();
+                $farray = array();
+                foreach($s as $f)
+                {
+                    $farray[$f->getIdsoftwares()] = $f->getSoftware();
+                }
+                return $farray;
+            }
+
+
+        )
+    ),
+    
 //        'navigation' =>
 //    
 //    array(
