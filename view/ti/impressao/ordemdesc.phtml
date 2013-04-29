@@ -1,13 +1,9 @@
 <div class="row-fluid">
 
     <div class="span3">
-        <ul class="nav nav-list">
-            <li class="nav-header">HelpDesk</li>
-            <li><a href="<?php echo $this->url('ti/helpdesk'); ?>">Página principal</a></li>
-            <li class=""><a href="<?php echo $this->url('ti/helpdesk/indicadores'); ?>">Indicadores</a></li>
-            <li class="nav-header">Imressão</li>
-            <li><a href="<?php echo $this->url('ti/impressao/relatorio'); ?>">Relatório</a></li>
-        </ul>
+        <?php
+        
+        include_once(__DIR__ . '/../menu.phtml'); ?>
 
     </div>
     <div class="span9">
@@ -22,8 +18,8 @@
             <tbody>
                 <?php foreach ($this->prints as $usuario => $impressoes): ?>
                     <tr>
-                        <td><?php echo substr($impressoes,1,strlen($impressoes)) ?></td>
                         <td><?php echo $usuario ?></td>
+                        <td><?php echo $impressoes ?></td>
 
 
                     </tr>
