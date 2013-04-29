@@ -28,7 +28,7 @@ class Module
                 $ex = end(explode('/', $entity));
 
                 $newentity = __NAMESPACE__ . '\Entity\\' . $ex;
-                $obj = new $newentity;
+                $obj = new $newentity($em);
                 $classes[] = $em->getClassMetadata($newentity);
                 file_put_contents($lock, 'lock');
             }
