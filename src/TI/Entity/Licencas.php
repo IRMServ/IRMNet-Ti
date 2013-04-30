@@ -38,7 +38,8 @@ class Licencas
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     * 
+     *  @Annotation\AllowEmpty(true)
+     * @Annotation\Type("Zend\Form\Element\Hidden")
      * @ORM\ManyToMany(targetEntity="TI\Entity\Equipamento", inversedBy="licencas")
      * @ORM\JoinTable(name="licencas_equipamento",
      *   joinColumns={
@@ -134,6 +135,14 @@ class Licencas
 
     public function getById($id) {
         return $this->em->getRepository(get_class($this))->find($id);
+    }
+
+    public function getEm() {
+        return $this->em;
+    }
+
+    public function setEm($em) {
+        $this->em = $em;
     }
 
 

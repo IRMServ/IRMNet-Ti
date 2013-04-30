@@ -84,19 +84,24 @@ class EquipamentosController extends AbstractActionController {
 
         $id = $this->params()->fromRoute('id');
         $e = new Equipamento($this->getEntityManager());
-        $equi = $e->getById($id);
-        $equi->setEm($this->getEntityManager());
 
-        $licen->getEquipamento()->add($equi);
-        $licen->setEquipamento($colequi);
+       
         $carac = $this->getServiceLocator()->get('LicencasSoftwaresPair');
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
             foreach ($data['my-select'] as $d) {
-                $equi->getLicencas()->add($licen->getById($d));
-                $licen->getEquipamento()->add($equi);
+                $equi = $e->getById($id);
+                $li = $licen->getById($d);
+               
+                $equi->setEm($this->getEntityManager());
+                $li->setEm($this->getEntityManager());
+               
+               
+                $equi->getLicencas()->add($li);
+                
+                $li->getEquipamento()->add($equi);
                 $equi->store();
-                $licen->store();
+                $li->store();
                 $this->getEntityManager()->flush();
             }
             $this->redirect()->toRoute('ti/equipamentos');
