@@ -76,7 +76,7 @@ class Fabricantes {
     
     public function store()
     {
-        if($this->getIdfabricantes() !== null)
+        if(!$this->getIdfabricantes())
         {
             $this->em->persist($this);
             $this->em->flush();

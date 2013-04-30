@@ -114,7 +114,7 @@ class Tipoequipamento {
     }
 
     public function store() {
-        if ($this->getIdtipoequipamento() !== null) {
+        if (!$this->getIdtipoequipamento()) {
             $this->em->persist($this);
             $this->em->flush();
         } else {

@@ -91,7 +91,7 @@ class Caracteristicas {
     }
 
     public function store() {
-        if ($this->getIdcaracteristicas() !== null) {
+        if (!$this->getIdcaracteristicas()) {
             $this->em->persist($this);
             $this->em->flush();
         } else {

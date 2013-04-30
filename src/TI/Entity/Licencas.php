@@ -123,7 +123,7 @@ class Licencas
     }
 
     public function store() {
-        if ($this->getIdlicencas() !== null) {
+        if (!$this->getIdlicencas()) {
             $this->em->persist($this);
             $this->em->flush();
         } else {

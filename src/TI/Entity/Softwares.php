@@ -91,7 +91,7 @@ class Softwares {
     }
 
     public function store() {
-        if ($this->getIdsoftwares() !== null) {
+        if (!$this->getIdsoftwares()) {
             $this->em->persist($this);
             $this->em->flush();
         } else {
