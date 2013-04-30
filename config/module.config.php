@@ -13,6 +13,7 @@ return array(
             'TI\Controller\Licencas' => 'TI\Controller\LicencasController',
             'TI\Controller\Caracteristicas' => 'TI\Controller\CaracteristicasController',
             'TI\Controller\TipoEquipamento' => 'TI\Controller\TipoEquipamentoController',
+            'TI\Controller\Equipamentos' => 'TI\Controller\EquipamentosController',
         ),
     ),
     'router' => array(
@@ -141,6 +142,49 @@ return array(
                                     'route' => '/store[/:id]',
                                     'defaults' => array(
                                         'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'equipamentos' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/equipamentos',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\Equipamentos',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                            'storecaracteristica' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store/caracteristica/:id',
+                                    'defaults' => array(
+                                        'action' => 'storestorecaracteristica',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                            'storelicencas' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store/licencas/:id',
+                                    'defaults' => array(
+                                        'action' => 'storelicencas',
                                         'id'=>0
                                     ),
                                 ),
@@ -645,7 +689,37 @@ return array(
                     $farray[$f->getIdsoftwares()] = $f->getSoftware();
                 }
                 return $farray;
-            }
+            },
+            'TipoEquipamentoPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $s = $em->getRepository('TI\Entity\Tipoequipamento')->findAll();
+                $farray = array();
+                foreach($s as $f)
+                {
+                    $farray[$f->getIdtipoequipamento()] = $f->getNome();
+                }
+                return $farray;
+            },
+            'LicencasSoftwaresPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $s = $em->getRepository('TI\Entity\Licencas')->findAll();
+                $farray = array();
+                foreach($s as $f)
+                {
+                    $farray[$f->getIdlicencas()] = "{$f->getSoftwaresFk()->getSoftware()} - {$f->getLicenca()}";
+                }
+                return $farray;
+            },
+            'CaracteristicasPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $s = $em->getRepository('TI\Entity\Caracteristicas')->findAll();
+                $farray = array();
+                foreach($s as $f)
+                {
+                    $farray[$f->getIdcaracteristicas()] = $f->getCaracteristica();
+                }
+                return $farray;
+            },
 
 
         )

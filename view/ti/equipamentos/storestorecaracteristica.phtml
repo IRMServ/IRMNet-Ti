@@ -1,0 +1,51 @@
+<style>
+    input[name="licencas"]
+    {
+        display:none;
+    }
+    #descri
+    {
+        margin-top:30px;
+    }
+    #descri label{
+        width:100%;
+        margin-top:10px;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        var elems = new Array();
+        $('#my-select').multiSelect(
+                {
+                    afterSelect: function(values)
+                    {
+                        var text = $("option[value='" + values + "']").text();
+                        elems.push(text);
+                        $('#descri').append("<label>" + text + ": <input type='text' name='" + text + "'></label>");
+                    }
+                }
+        );
+    });
+</script>
+<div class="row-fluid">
+
+    <div class="span3">
+        <?php include_once(__DIR__ . '/../menu.phtml'); ?>
+
+
+    </div>
+    <div class="span9">
+        <form method="post">
+            <select multiple="multiple" id="my-select" name="my-select[]">
+                <?php foreach ($this->carac as $key => $value): ?>
+                    <option value='<?php echo $key; ?>'><?php echo $value ?></option>
+
+                <?php endforeach; ?>
+            </select>
+            <div id='descri'>
+
+            </div>
+            <input type='submit' value='Enviar' class='btn btn-success'>
+        </form>
+    </div>
+</div>
