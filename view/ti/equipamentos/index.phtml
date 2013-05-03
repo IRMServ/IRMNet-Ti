@@ -27,7 +27,9 @@
                 <tr>
                    
                     <th>Equipamento</th>
+                    <th>Modelo</th>                   
                     <th>Tipo</th>                   
+                    <th>Fabricante</th>                   
                     <th>Opções</th>
 
                 </tr>
@@ -38,6 +40,8 @@
                        
                         <td><?php echo $usuario->getNome(); ?></td>
                         <td><?php echo $usuario->getModeloequipamento()->getModelo(); ?></td>                      
+                        <td><?php echo $usuario->getModeloequipamento()->getTipoequipamento()->getNome(); ?></td>                      
+                        <td><?php echo $usuario->getModeloequipamento()->getFabricantes()->getFabricante(); ?></td>                      
                         <td>
                              <a href="<?php echo $this->url('ti/equipamentos/store',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a>
                              <a href="<?php echo $this->url('ti/equipamentos/descricao-logica',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Descrição lógica"  class="btn"><i class="icon-list-alt"></i></a>
@@ -51,7 +55,7 @@
             </tbody>
             <tfoot>
                 <tr  align="center">
-                    <td colspan="3" >
+                    <td colspan="5" >
                        
                         <a data-toggle="tooltip" title="Adicionar registro"   href="<?php echo $this->url('ti/equipamentos/store');?>" class="btn btn-primary"><i class="icon-plus icon-white"></i></a>
                     </td>
