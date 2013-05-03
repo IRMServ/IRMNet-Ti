@@ -25,9 +25,11 @@
             <thead>         
                 <tr>
                    
-                    <th>Tipo</th>
-                    <th>Sigla</th>
+                    <th>Modelo</th>
+                    
                     <th>Fabricante</th>
+                    <th>Tipo de equipamento</th>
+                    <th>Observacao</th>
                    
                     <th>Opções</th>
 
@@ -37,11 +39,13 @@
                 <?php foreach ($this->fab as $usuario): ?>
                     <tr>
                        
-                        <td><?php echo $usuario->getNome(); ?></td>
-                        <td><?php echo $usuario->getSigla(); ?></td>
+                        <td><?php echo $usuario->getModelo(); ?></td>
+                        
                         <td><?php echo $usuario->getFabricantes()->getFabricante(); ?></td>
+                        <td><?php echo $usuario->getTipoequipamento()->getNome(); ?></td>
+                        <td><?php echo $usuario->getObservacao(); ?></td>
                       
-                        <td> <a href="<?php echo $this->url('ti/tipo-equipamento/store',array('id'=>$usuario->getIdtipoequipamento()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a></td>
+                        <td> <a href="<?php echo $this->url('ti/modelo-equipamento/store',array('id'=>$usuario->getIdmodeloequipamento()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a></td>
 
 
                     </tr>
@@ -50,9 +54,9 @@
             </tbody>
             <tfoot>
                 <tr  align="center">
-                    <td colspan="4" >
+                    <td colspan="5" >
                        
-                        <a data-toggle="tooltip" title="Adicionar registro"   href="<?php echo $this->url('ti/tipo-equipamento/store');?>" class="btn btn-primary"><i class="icon-plus icon-white"></i></a>
+                        <a data-toggle="tooltip" title="Adicionar registro"   href="<?php echo $this->url('ti/modelo-equipamento/store');?>" class="btn btn-primary"><i class="icon-plus icon-white"></i></a>
                     </td>
                    
                 </tr>

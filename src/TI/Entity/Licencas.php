@@ -62,6 +62,16 @@ class Licencas
      * })
      */
     public $softwaresFk;
+    /**
+     * @var string
+     * @Annotation\Type("Zend\Form\Element\Textarea")
+     *  @Annotation\AllowEmpty(true)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
+     * @Annotation\Options({"label":"Observação *: "})
+     * @ORM\Column(name="observacao", type="text", nullable=true)
+     */
+    public $observacao;
     
      /**
      * @Annotation\Type("Zend\Form\Element\Submit")
@@ -71,12 +81,28 @@ class Licencas
     
     private $em;
 
-    /**
+    public function getObservacao() {
+        return $this->observacao;
+    }
+
+    public function setObservacao($observacao) {
+        $this->observacao = $observacao;
+    }
+
+    public function getSubmit() {
+        return $this->submit;
+    }
+
+    public function setSubmit($submit) {
+        $this->submit = $submit;
+    }
+
+        /**
      * Constructor
      */
     public function __construct(EntityManager $em)
     {
-        $this->em = $em;
+        $this->setEm($em);
         $this->equipamento = new \Doctrine\Common\Collections\ArrayCollection();
     }
     public function getIdlicencas() {
@@ -121,6 +147,7 @@ class Licencas
         $this->setIdlicencas($data['idlicencas']);
         $this->setLicenca($data['licenca']);
         $this->setSoftwaresFk($s->getById($data['softwaresFk']));
+        $this->setObservacao($data['observacao']);
     }
 
     public function store() {

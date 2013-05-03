@@ -13,6 +13,7 @@ return array(
             'TI\Controller\Licencas' => 'TI\Controller\LicencasController',
             'TI\Controller\Caracteristicas' => 'TI\Controller\CaracteristicasController',
             'TI\Controller\TipoEquipamento' => 'TI\Controller\TipoEquipamentoController',
+            'TI\Controller\ModeloEquipamento' => 'TI\Controller\ModeloEquipamentoController',
             'TI\Controller\Equipamentos' => 'TI\Controller\EquipamentosController',
         ),
     ),
@@ -148,6 +149,29 @@ return array(
                             ),
                         ),
                     ),
+                    'modelo-equipamento' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/modelo-equipamento',
+                            'defaults' => array(                                
+                                'controller' => 'TI\Controller\ModeloEquipamento',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
                     'equipamentos' => array(
                         'type' => 'segment',
                         'options' => array(
@@ -165,6 +189,26 @@ return array(
                                     'route' => '/store[/:id]',
                                     'defaults' => array(
                                         'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                            'descricao-logica' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/descricao-logica/:id',
+                                    'defaults' => array(
+                                        'action' => 'descricaologica',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                            'descricao-fisica' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/descricao-fisica/:id',
+                                    'defaults' => array(
+                                        'action' => 'descricaofisica',
                                         'id'=>0
                                     ),
                                 ),
@@ -717,6 +761,16 @@ return array(
                 foreach($s as $f)
                 {
                     $farray[$f->getIdcaracteristicas()] = $f->getCaracteristica();
+                }
+                return $farray;
+            },
+            'ModeloEquipPair' => function($sm) {
+                $em = $sm->get('doctrine.entitymanager.orm_default');
+                $s = $em->getRepository('TI\Entity\Modeloequipamento')->findAll();
+                $farray = array();
+                foreach($s as $f)
+                {
+                    $farray[$f->getIdmodeloequipamento()] = $f->getModelo();
                 }
                 return $farray;
             },

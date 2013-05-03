@@ -38,6 +38,16 @@ class Fabricantes {
      * @ORM\Column(name="fabricante", type="string", length=245, nullable=true)
      */
     public $fabricante;
+    /**
+     * @var string
+     * @Annotation\Type("Zend\Form\Element\Textarea")
+     * @Annotation\AllowEmpty(true)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
+     * @Annotation\Options({"label":"Observação *: "})
+     * @ORM\Column(name="observacao", type="text", nullable=true)
+     */
+    public $observacao;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
@@ -64,10 +74,11 @@ class Fabricantes {
     public function populate(array $data) {
         $this->setFabricante($data['fabricante']);
         $this->setIdfabricantes($data['idfabricantes']);
+        $this->setObservacao($data['observacao']);
     }
 
     public function __construct(EntityManager $em) {
-        $this->em = $em;
+        $this->setEm($em);
     }
 
     public function getAll() {
@@ -90,5 +101,31 @@ class Fabricantes {
     {
          return $this->em->getRepository(get_class($this))->find($id);
     }
+    
+    public function getEm() {
+        return $this->em;
+    }
+
+    public function setEm($em) {
+        $this->em = $em;
+    }
+
+    public function getObservacao() {
+        return $this->observacao;
+    }
+
+    public function setObservacao($observacao) {
+        $this->observacao = $observacao;
+    }
+
+    public function getSubmit() {
+        return $this->submit;
+    }
+
+    public function setSubmit($submit) {
+        $this->submit = $submit;
+    }
+
+
 
 }

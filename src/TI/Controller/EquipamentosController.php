@@ -35,7 +35,7 @@ class EquipamentosController extends AbstractActionController {
         $fab = new Equipamento($this->getEntityManager());
         $afb = new AnnotationBuilder();
         $form = $afb->createForm($fab);
-        $form->get('tipoequipamentoFk')->setEmptyOption('Escolha um Tipo de Equipamento')->setValueOptions($this->getServiceLocator()->get('TipoEquipamentoPair'));
+        $form->get('modeloequipamento')->setEmptyOption('Escolha um Modelo de Equipamento')->setValueOptions($this->getServiceLocator()->get('ModeloEquipPair'));
 
         $id = $this->params()->fromRoute('id');
         if ($id) {
@@ -49,15 +49,17 @@ class EquipamentosController extends AbstractActionController {
             if ($form->isValid()) {
                 $fab->populate((array) $data);
                 $fab->store();
+
                 $this->flashMessenger()->addSuccessMessage("Equipamento cadastrado com sucesso");
-                $this->redirect()->toRoute('ti/equipamentos/storecaracteristica', array('id' => $fab->getIdequipamento()));
+                return $this->redirect()->toRoute('ti/equipamentos/storecaracteristica', array('id' => $fab->getIdequipamento()));
             }
         }
         return new ViewModel(array('form' => $form));
     }
 
     public function storestorecaracteristicaAction() {
-        $fab = new EquipamentoCaracteristica($this->getEntityManager());
+
+
         $id = $this->params()->fromRoute('id');
         $e = new Equipamento($this->getEntityManager());
         $equi = $e->getById($id);
@@ -67,9 +69,11 @@ class EquipamentosController extends AbstractActionController {
             foreach ($data['my-select'] as $d) {
                 $caract = new Caracteristicas($this->getEntityManager());
                 $c = $caract->getById($d);
+                $fab = new EquipamentoCaracteristica($this->getEntityManager());
                 $fab->setCaracteristicasFk($c);
                 $fab->setEquipamentoFk($equi);
                 $fab->setDetalhe($data[str_replace(' ', '_', $c->getCaracteristica())]);
+                echo $data[str_replace(' ', '_', $c->getCaracteristica())] . '-' . $c->getCaracteristica() . '<br>';
                 $fab->store();
             }
             $this->redirect()->toRoute('ti/equipamentos/storelicencas', array('id' => $id));
@@ -85,20 +89,20 @@ class EquipamentosController extends AbstractActionController {
         $id = $this->params()->fromRoute('id');
         $e = new Equipamento($this->getEntityManager());
 
-       
+
         $carac = $this->getServiceLocator()->get('LicencasSoftwaresPair');
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
             foreach ($data['my-select'] as $d) {
                 $equi = $e->getById($id);
                 $li = $licen->getById($d);
-               
+
                 $equi->setEm($this->getEntityManager());
                 $li->setEm($this->getEntityManager());
-               
-               
+
+
                 $equi->getLicencas()->add($li);
-                
+
                 $li->getEquipamento()->add($equi);
                 $equi->store();
                 $li->store();
@@ -107,6 +111,30 @@ class EquipamentosController extends AbstractActionController {
             $this->redirect()->toRoute('ti/equipamentos');
         }
         return new ViewModel(array('carac' => $carac));
+    }
+
+    public function descricaologicaAction() {
+        $id = $this->params()->fromRoute('id');
+        $e = new Equipamento($this->getEntityManager());
+        $equi = $e->getById($id);
+        return new ViewModel(array('licencas' => $equi->getLicencas(), 'equip' => $equi));
+    }
+
+    public function descricaofisicaAction() {
+        $id = $this->params()->fromRoute('id');
+        $ec = new EquipamentoCaracteristica($this->getEntityManager());
+        $equipcar = $ec->getAll();
+        $aCara = array();
+        foreach($equipcar as $s)
+        {
+            if($s->getEquipamentoFk()->getIdequipamento() == $id)
+            {
+                $aCara[] = $s;
+            }
+        }
+      
+        
+        return new ViewModel(array('peca' => $aCara));
     }
 
 }

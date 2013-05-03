@@ -5,11 +5,10 @@ namespace TI\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Debug\Debug;
-use TI\Entity\Fabricantes;
-use TI\Entity\Tipoequipamento;
+use TI\Entity\Modeloequipamento;
 use Zend\Form\Annotation\AnnotationBuilder;
 
-class TipoEquipamentoController extends AbstractActionController {
+class ModeloEquipamentoController extends AbstractActionController {
 
     protected $em;
     protected $aCount = array();
@@ -24,17 +23,18 @@ class TipoEquipamentoController extends AbstractActionController {
 
     public function indexAction() {
         $messages_success = $this->flashMessenger()->getCurrentSuccessMessages();
-        $fab = new Tipoequipamento($this->getEntityManager());
+        $fab = new Modeloequipamento($this->getEntityManager());
         $total = $fab->getAll();        
         return new ViewModel(array('fab'=>$total,'messages-success'=>$messages_success));
     }
     
     public function storeAction()
     {
-        $fab = new Tipoequipamento($this->getEntityManager());
+        $fab = new Modeloequipamento($this->getEntityManager());
         $afb = new AnnotationBuilder();
         $form = $afb->createForm($fab);
-        $fabricante  = $form->get('fabricantes')->setEmptyOption('Escolha um Fabricante')->setValueOptions($this->getServiceLocator()->get('FabricantesPair'));;
+        $form->get('tipoequipamento')->setEmptyOption('Escolha um Tipo de Equipamento')->setValueOptions($this->getServiceLocator()->get('TipoEquipamentoPair'));;
+        $form->get('fabricantes')->setEmptyOption('Escolha um Fabricante')->setValueOptions($this->getServiceLocator()->get('FabricantesPair'));;
         $id = $this->params()->fromRoute('id');
         if($id)
         {
@@ -49,8 +49,8 @@ class TipoEquipamentoController extends AbstractActionController {
             {
                 $fab->populate((array)$data);
                 $fab->store();
-                $this->flashMessenger()->addSuccessMessage("Tipo de Equipamento cadastrado com sucesso");
-                $this->redirect()->toRoute('ti/tipo-equipamento');
+                $this->flashMessenger()->addSuccessMessage("Modelo de Equipamento cadastrado com sucesso");
+                $this->redirect()->toRoute('ti/modelo-equipamento');
             }
         }
         return new ViewModel(array('form'=>$form));        

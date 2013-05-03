@@ -48,7 +48,7 @@ class CaracteristicasController extends AbstractActionController {
             {
                 $fab->populate((array)$data);
                 $fab->store();
-                $this->flashMessenger()->addSuccessMessage("Tipo de Equipamento cadastrado com sucesso");
+                $this->flashMessenger()->addSuccessMessage("Caracteristica cadastrada com sucesso");
                 $this->redirect()->toRoute('ti/caracteristicas');
             }
         }

@@ -21,7 +21,13 @@
                     {
                         var text = $("option[value='" + values + "']").text();
                         elems.push(text);
-                        $('#descri').append("<label>" + text + ": <input type='text' name='" + text + "'></label>");
+                        $('#descri').append("<label id='"+text+"'>" + text + ": <input  type='text' name='" + text + "'></label>");
+                    },
+                    afterDeselect: function(values)
+                    {
+                        var text = $("option[value='" + values + "']").text();
+                        //alert(text);
+                       $("#"+text).remove();
                     }
                 }
         );

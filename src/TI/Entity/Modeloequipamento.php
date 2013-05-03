@@ -7,24 +7,24 @@ use Doctrine\ORM\EntityManager;
 use Zend\Form\Annotation;
 
 /**
- * Tipoequipamento
+ * Modeloequipamento
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @ORM\Table(name="tipoequipamento")
+ * @ORM\Table(name="modeloequipamento")
  * @ORM\Entity
  */
-class Tipoequipamento {
-
+class Modeloequipamento
+{
+    
     private $entityManager = null;
-
     /**
      * @var integer
      * @Annotation\AllowEmpty(true)
      * @Annotation\Type("Zend\Form\Element\Hidden")
-     * @ORM\Column(name="idTipoEquipamento", type="integer", nullable=false)
+     * @ORM\Column(name="idModeloEquipamento", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    public $idtipoequipamento;
+    public $idmodeloequipamento;
 
     /**
      * @var string
@@ -33,31 +33,31 @@ class Tipoequipamento {
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
      * @Annotation\Options({"label":"Nome *: "})
-     * @ORM\Column(name="nome", type="string", length=245, nullable=false)
+     * @ORM\Column(name="modelo", type="string", length=45, nullable=false)
      */
-    public $nome;
-
-    /**
-     * @var string
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required({"required":"true" })
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
-     * @Annotation\Options({"label":"Sigla *: "})
-     * @ORM\Column(name="sigla", type="string", length=245, nullable=false)
-     */
-    public $sigla;
+    public $modelo;
 
     /**
      * @var string
      * @Annotation\Type("Zend\Form\Element\Textarea")
-     *  @Annotation\AllowEmpty(true)
+     * @Annotation\AllowEmpty(true)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
      * @Annotation\Options({"label":"Observação *: "})
      * @ORM\Column(name="observacao", type="text", nullable=true)
      */
     public $observacao;
+
+    /**
+     * @var \TI\Entity\Tipoequipamento
+     * @Annotation\Type("Zend\Form\Element\Select")
+     * @Annotation\Options({"label":"Tipo de equipamento *: "})
+     * @ORM\ManyToOne(targetEntity="TI\Entity\Tipoequipamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="TipoEquipamento", referencedColumnName="idTipoEquipamento")
+     * })
+     */
+    public $tipoequipamento;
 
     /**
      * @var \TI\Entity\Fabricantes
@@ -79,33 +79,43 @@ class Tipoequipamento {
     public function getEntityManager() {
         return $this->entityManager;
     }
+    
+    public function getSubmit() {
+        return $this->submit;
+    }
 
-    public function setEntityManager($entityManager) {
+    public function setSubmit($submit) {
+        $this->submit = $submit;
+    }
+
+    
+    public function setEntityManager(EntityManager $entityManager) {
+        
         $this->entityManager = $entityManager;
     }
 
-    public function getIdtipoequipamento() {
-        return $this->idtipoequipamento;
+    public function getIdmodeloequipamento() {
+        return $this->idmodeloequipamento;
     }
 
-    public function setIdtipoequipamento($idtipoequipamento) {
-        $this->idtipoequipamento = $idtipoequipamento;
+    public function setIdmodeloequipamento($idmodeloequipamento) {
+        $this->idmodeloequipamento = $idmodeloequipamento;
+    }
+    
+    public function getFabricantes() {
+        return $this->fabricantes;
     }
 
-    public function getNome() {
-        return $this->nome;
+    public function setFabricantes(\TI\Entity\Fabricantes $fabricantes) {
+        $this->fabricantes = $fabricantes;
     }
 
-    public function setNome($nome) {
-        $this->nome = $nome;
+    public function getModelo() {
+        return $this->modelo;
     }
 
-    public function getSigla() {
-        return $this->sigla;
-    }
-
-    public function setSigla($sigla) {
-        $this->sigla = $sigla;
+    public function setModelo($modelo) {
+        $this->modelo = $modelo;
     }
 
     public function getObservacao() {
@@ -116,30 +126,20 @@ class Tipoequipamento {
         $this->observacao = $observacao;
     }
 
-    public function getFabricantes() {
-        return $this->fabricantes;
+    public function getTipoequipamento() {
+        return $this->tipoequipamento;
     }
 
-    public function setFabricantes(\TI\Entity\Fabricantes $fabricantes) {
-        $this->fabricantes = $fabricantes;
+    public function setTipoequipamento(\TI\Entity\Tipoequipamento $tipoequipamento) {
+        $this->tipoequipamento = $tipoequipamento;
     }
 
-    public function populate(array $data) {
-        $fab = new Fabricantes($this->getEntityManager());
-        $this->setFabricantes($fab->getById($data['fabricantes']));
-        $this->setIdtipoequipamento($data['idtipoequipamento']);
-        $this->setNome($data['nome']);
-        $this->setSigla($data['sigla']);
-        $this->setObservacao($data['observacao']);
-        
-    }
-    
-    public function __construct(EntityManager $em) {
-        $this->setEntityManager($em);
+    function __construct( EntityManager $entityManager) {
+        $this->setEntityManager($entityManager);
     }
     
     public function store() {
-        if (!$this->getIdtipoequipamento()) {
+        if (!$this->getIdmodeloequipamento()) {
             $this->getEntityManager()->persist($this);
             $this->getEntityManager()->flush();
         } else {
@@ -147,12 +147,26 @@ class Tipoequipamento {
             $this->getEntityManager()->flush();
         }
     }
-
+    
+    public function populate(array $data)
+    {
+         $fab = new Fabricantes($this->getEntityManager());
+        $this->setFabricantes($fab->getById($data['fabricantes']));
+        $tipo = new Tipoequipamento($this->getEntityManager());
+        $this->setIdmodeloequipamento($data['idmodeloequipamento']);
+        $this->setModelo($data['modelo']);
+        $this->setObservacao($data['observacao']);
+        $this->setTipoequipamento($tipo->getById($data['tipoequipamento']));
+    }
+    
     public function getAll() {
         return $this->getEntityManager()->getRepository(get_class($this))->findAll();
+      
     }
+    
     public function getById($id) {
         return $this->getEntityManager()->getRepository(get_class($this))->find($id);
     }
+
 
 }

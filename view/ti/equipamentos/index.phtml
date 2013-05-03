@@ -36,9 +36,13 @@
                 <?php foreach ($this->fab as $usuario): ?>
                     <tr>
                        
-                        <td><?php echo $usuario->getName(); ?></td>
-                        <td><?php echo $usuario->getTipoequipamentoFk()->getNome(); ?></td>                      
-                        <td> <a href="<?php echo $this->url('ti/equipamentos/store',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a></td>
+                        <td><?php echo $usuario->getNome(); ?></td>
+                        <td><?php echo $usuario->getModeloequipamento()->getModelo(); ?></td>                      
+                        <td>
+                             <a href="<?php echo $this->url('ti/equipamentos/store',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a>
+                             <a href="<?php echo $this->url('ti/equipamentos/descricao-logica',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Descrição lógica"  class="btn"><i class="icon-list-alt"></i></a>
+                             <a href="<?php echo $this->url('ti/equipamentos/descricao-fisica',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Descrição física"  class="btn"><i class="icon-wrench"></i></a>
+                        </td>
 
 
                     </tr>

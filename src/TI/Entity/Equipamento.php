@@ -31,9 +31,9 @@ class Equipamento {
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
      * @Annotation\Options({"label":"Nome (número) *: "})
-     * @ORM\Column(name="name", type="string", length=245, nullable=true)
+     * @ORM\Column(name="nome", type="string", length=245, nullable=true)
      */
-    public $name;
+    public $nome;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -44,16 +44,27 @@ class Equipamento {
     public $licencas;
 
     /**
-     * @var \TI\Entity\Tipoequipamento
+     * @var string
+     * @Annotation\Type("Zend\Form\Element\Textarea")
+     *  @Annotation\AllowEmpty(true)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"1"}})
+     * @Annotation\Options({"label":"Observação *: "})
+     * @ORM\Column(name="observacao", type="text", nullable=true)
+     */
+    public $observacao;
+
+    /**
+     * @var \TI\Entity\Modeloequipamento
      * @Annotation\Type("Zend\Form\Element\Select")
-     * @Annotation\Options({"label":"Tipo de Equipamento *: "})
-     * @ORM\ManyToOne(targetEntity="TI\Entity\Tipoequipamento")
+     * @Annotation\Options({"label":"Modelo do equipamento *: "})
+     * @ORM\ManyToOne(targetEntity="TI\Entity\Modeloequipamento")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="TipoEquipamento_fk", referencedColumnName="idTipoEquipamento")
+     *   @ORM\JoinColumn(name="ModeloEquipamento", referencedColumnName="idModeloEquipamento")
      * })
      */
-    public $tipoequipamentoFk;
-    
+    public $modeloequipamento;
+
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Enviar","class":"btn btn-success"})
@@ -61,6 +72,7 @@ class Equipamento {
     public $submit;
     
     private $em;
+
     public function getEm() {
         return $this->em;
     }
@@ -69,34 +81,40 @@ class Equipamento {
         $this->em = $em;
     }
 
-        /**
+    /**
      * Constructor
      */
     public function __construct(EntityManager $em) {
         $this->licencas = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->em = $em;
+        $this->setEm($em);
     }
-    
-    
 
     public function getAll() {
-        return $this->em->getRepository(get_class($this))->findAll();
+        return $this->getEm()->getRepository(get_class($this))->findAll();
     }
 
     public function store() {
         if (!$this->getIdequipamento()) {
-            $this->em->persist($this);
-            $this->em->flush();
+            $this->getEm()->persist($this);
+            $this->getEm()->flush();
         } else {
-            $this->em->merge($this);
-            $this->em->flush();
+            $this->getEm()->merge($this);
+            $this->getEm()->flush();
         }
+    }
+
+    public function getObservacao() {
+        return $this->observacao;
+    }
+
+    public function setObservacao($observacao) {
+        $this->observacao = $observacao;
     }
 
     public function getById($id) {
         return $this->em->getRepository(get_class($this))->find($id);
     }
-    
+
     public function getIdequipamento() {
         return $this->idequipamento;
     }
@@ -105,12 +123,12 @@ class Equipamento {
         $this->idequipamento = $idequipamento;
     }
 
-    public function getName() {
-        return $this->name;
+    public function getNome() {
+        return $this->nome;
     }
 
-    public function setName($name) {
-        $this->name = $name;
+    public function setNome($name) {
+        $this->nome = $name;
     }
 
     public function getLicencas() {
@@ -121,19 +139,27 @@ class Equipamento {
         $this->licencas = $licencas;
     }
 
-    public function getTipoequipamentoFk() {
-        return $this->tipoequipamentoFk;
+    public function populate(array $data) {
+        $tip = new Modeloequipamento($this->getEm());
+        $this->setNome($data['nome']);
+        $this->setModeloequipamento($tip->getById($data['modeloequipamento']));
+        $this->setObservacao($data['observacao']);
     }
 
-    public function setTipoequipamentoFk(\TI\Entity\Tipoequipamento $tipoequipamentoFk) {
-        $this->tipoequipamentoFk = $tipoequipamentoFk;
+    public function getModeloequipamento() {
+        return $this->modeloequipamento;
     }
 
-public function populate(array $data)
-{
-    $tip = new Tipoequipamento($this->em);
-    $this->setName($data['name']);
-    $this->setTipoequipamentoFk($tip->getById($data['tipoequipamentoFk']));
-}
+    public function setModeloequipamento(\TI\Entity\Modeloequipamento $modeloequipamento) {
+        $this->modeloequipamento = $modeloequipamento;
+    }
+
+    public function getSubmit() {
+        return $this->submit;
+    }
+
+    public function setSubmit($submit) {
+        $this->submit = $submit;
+    }
 
 }

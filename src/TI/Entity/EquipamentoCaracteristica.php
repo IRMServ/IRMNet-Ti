@@ -14,6 +14,8 @@ use Zend\Form\Annotation;
  */
 class EquipamentoCaracteristica {
 
+    private $em = null;
+
     /**
      * @var integer
      *
@@ -21,14 +23,14 @@ class EquipamentoCaracteristica {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $idequipamentoCaracteristica;
+    public $idequipamentoCaracteristica;
 
     /**
      * @var string
      *
      * @ORM\Column(name="detalhe", type="string", length=245, nullable=true)
      */
-    private $detalhe;
+    public $detalhe;
 
     /**
      * @var \TI\Entity\Equipamento
@@ -38,7 +40,7 @@ class EquipamentoCaracteristica {
      *   @ORM\JoinColumn(name="Equipamento_fk", referencedColumnName="idEquipamento")
      * })
      */
-    private $equipamentoFk;
+    public $equipamentoFk;
 
     /**
      * @var \TI\Entity\Caracteristicas
@@ -48,7 +50,12 @@ class EquipamentoCaracteristica {
      *   @ORM\JoinColumn(name="Caracteristicas_fk", referencedColumnName="idCaracteristicas")
      * })
      */
-    private $caracteristicasFk;
+    public $caracteristicasFk;
+
+    /*
+     * @ORM\Column(name="observacao", type="text", nullable=true)
+     */
+    public $observacao;
 
     public function getIdequipamentoCaracteristica() {
         return $this->idequipamentoCaracteristica;
@@ -82,27 +89,49 @@ class EquipamentoCaracteristica {
         $this->caracteristicasFk = $caracteristicasFk;
     }
 
-    public function __construct(EntityManager $em) {
-        $this->licencas = new \Doctrine\Common\Collections\ArrayCollection();
+    public function getObservacao() {
+        return $this->observacao;
+    }
+
+    public function setObservacao($observacao) {
+        $this->observacao = $observacao;
+    }
+
+    public function getEm() {
+        return $this->em;
+    }
+
+    public function setEm($em) {
         $this->em = $em;
     }
 
+    public function __construct(EntityManager $em) {
+        $this->setEm($em);
+    }
+
+    public function getByEquipamento($id) {
+    
+       // e$this->getEm()->getRepository(get_class($this))->getClassName();//findBy(array('Equipamentos'=>$id));
+        
+        return $this->getEm()->getRepository(get_class($this))->findBy(array('Equipamentos_fk'=>$id));
+    }
+
     public function getAll() {
-        return $this->em->getRepository(get_class($this))->findAll();
+        return $this->getEm()->getRepository(get_class($this))->findAll();
     }
 
     public function store() {
         if (!$this->getIdequipamentoCaracteristica()) {
-            $this->em->persist($this);
-            $this->em->flush();
+            $this->getEm()->persist($this);
+            $this->getEm()->flush();
         } else {
-            $this->em->merge($this);
-            $this->em->flush();
+            $this->getEm()->merge($this);
+            $this->getEm()->flush();
         }
     }
 
     public function getById($id) {
-        return $this->em->getRepository(get_class($this))->find($id);
+        return $this->getEm()->getRepository(get_class($this))->find($id);
     }
 
 }

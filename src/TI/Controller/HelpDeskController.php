@@ -188,7 +188,9 @@ class HelpDeskController extends AbstractActionController {
 
                 $content = $renderer->render('ti/help-desk/email-abertura-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $author['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $chamado->getDescricao()));
                 $mimehtml = new MimeType($content);
+                $mimehtml->type = Mime::TYPE_HTML;
 
+                $mimehtml->charset = 'UTF-8';
                 $message = new Message();
 
                 $message->addPart($mimehtml);
@@ -197,12 +199,8 @@ class HelpDeskController extends AbstractActionController {
                 $mail->addFrom('webmaster@irmserv.com.br')
                         ->addCc($author['email'])
                         ->addTo($setor->getEmail())
-                        ->setSubject("[chamado Aberto - T.I.] {$chamado->getTitulo()}")
+                        ->setSubject("[chamado aberto] {$chamado->getTitulo()}")
                         ->setBody($message);
-                $headers = $mail->getHeaders();
-                $headers->removeHeader('Content-Type');
-                $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
-                $mail->setHeaders($headers);
 
                 $mail->send();
                 $this->flashMessenger()->addMessage('As informações foram registradas.');
@@ -295,7 +293,7 @@ class HelpDeskController extends AbstractActionController {
                 $renderer = $this->getServiceLocator()->get('ViewRenderer');
                 $content = $renderer->render('ti/help-desk/email-resposta-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
                 $mimehtml = new MimeType($content);
-
+                $mimehtml->type = Mime::TYPE_HTML;
 
                 $message = new Message();
                 $message->addPart($mimehtml);
@@ -304,12 +302,8 @@ class HelpDeskController extends AbstractActionController {
                 $mail->addFrom('webmaster@irmserv.com.br')
                         ->addCc($store['email'])
                         ->addTo($setor->getEmail())
-                        ->setSubject("[Resposta Chamado - T.I.] {$chamado->getTitulo()}")
+                        ->setSubject("[resposta chamado] {$chamado->getTitulo()}")
                         ->setBody($message);
-                $headers = $mail->getHeaders();
-                $headers->removeHeader('Content-Type');
-                $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
-                $mail->setHeaders($headers);
 
                 $mail->send();
                 $this->redirect()->toRoute('ti/helpdesk/chamado', array('chamado' => $id, 'setor' => $setor->getIdsetor()));
@@ -376,12 +370,8 @@ class HelpDeskController extends AbstractActionController {
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addCc($store['email'])
                     ->addTo($setor->getEmail())
-                    ->setSubject("[Chamado Fechado - T.I.] {$chamado->getTitulo()}")
+                    ->setSubject("[Chamado fechado] {$chamado->getTitulo()}")
                     ->setBody($message);
-            $headers = $mail->getHeaders();
-            $headers->removeHeader('Content-Type');
-            $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
-            $mail->setHeaders($headers);
 
             $mail->send();
 
@@ -412,9 +402,27 @@ class HelpDeskController extends AbstractActionController {
         return new ViewModel(array('chamado' => $chamado, 'setor' => $setor));
     }
 
-   
-    
-      public function indicadoresAction() {
+    public function mailAction() {
+        $renderer = $this->getServiceLocator()->get('ViewRenderer');
+
+
+
+        $content = $renderer->render('helpdesk/index/email.phtml', array('url' => 'google.com.br', 'name' => 'teste'));
+        $mimehtml = new MimeType($content);
+        $mimehtml->type = Mime::TYPE_HTML;
+        $message = new Message();
+        $message->addPart($mimehtml);
+
+        $mail = new Mail($this->getServiceLocator());
+        $mail->addFrom('webmaster@irmserv.com.br')
+                ->addTo('igor.carvalho@irmserv.com.br')
+                ->setSubject('teste mail service')
+                ->setBody($message);
+
+        $mail->send();
+    }
+
+    public function indicadoresAction() {
         $em = $this->getEntityManager();
         $setor = $this->params()->fromRoute('setor');
         

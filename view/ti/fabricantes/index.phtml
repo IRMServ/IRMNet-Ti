@@ -26,6 +26,7 @@
                 <tr>
                    
                     <th>Fabricante</th>
+                    <th>Observação</th>
                    
                     <th>Opções</th>
 
@@ -36,6 +37,7 @@
                     <tr>
                        
                         <td><?php echo $usuario->getFabricante(); ?></td>
+                        <td><?php echo $usuario->getObservacao(); ?></td>
                       
                         <td> <a href="<?php echo $this->url('ti/fabricantes/store',array('id'=>$usuario->getIdfabricantes()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a></td>
 
