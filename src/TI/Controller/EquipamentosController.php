@@ -123,26 +123,6 @@ class EquipamentosController extends AbstractActionController {
     public function descricaofisicaAction() {
         $id = $this->params()->fromRoute('id');
         $ec = new EquipamentoCaracteristica($this->getEntityManager());
-        $equipcar = $ec->getAll();
-        $aCara = array();
-        foreach($equipcar as $s)
-        {
-            if($s->getEquipamentoFk()->getIdequipamento() == $id)
-            {
-                $aCara[] = $s;
-            }
-        }
-      
-        
-        return new ViewModel(array('peca' => $aCara));
-    }
-    
-     public function equipamentoAction() {
-        $id = $this->params()->fromRoute('id');
-        $e = new Equipamento($this->getEntityManager());
-        $equi = $e->getById($id);
-        
-         $ec = new EquipamentoCaracteristica($this->getEntityManager());
 
         $equipcar = $ec->getAll();
         $aCara = array();
@@ -151,9 +131,16 @@ class EquipamentosController extends AbstractActionController {
                 $aCara[] = $s;
             }
         }
-       
-        
-        return new ViewModel(array('licencas' => $equi->getLicencas(), 'equip' => $equi,'peca' => $aCara));
+        return new ViewModel(array('peca' => $aCara));
+    }
+
+    public function equipamentoAction() {
+        $id = $this->params()->fromRoute('id');
+        $e = new Equipamento($this->getEntityManager());
+        $equi = $e->getById($id);
+        $ec = new EquipamentoCaracteristica($this->getEntityManager());
+        $equipcar = $ec->getByEquipamento($id);
+        return new ViewModel(array('licencas' => $equi->getLicencas(), 'equip' => $equi, 'peca' => $equipcar));
     }
 
 }

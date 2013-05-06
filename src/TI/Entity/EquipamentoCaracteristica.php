@@ -79,6 +79,7 @@ class EquipamentoCaracteristica {
 
     public function setEquipamentoFk(\TI\Entity\Equipamento $equipamentoFk) {
         $this->equipamentoFk = $equipamentoFk;
+        return $this;
     }
 
     public function getCaracteristicasFk() {
@@ -110,10 +111,7 @@ class EquipamentoCaracteristica {
     }
 
     public function getByEquipamento($id) {
-    
-       // e$this->getEm()->getRepository(get_class($this))->getClassName();//findBy(array('Equipamentos'=>$id));
-        
-        return $this->getEm()->getRepository(get_class($this))->findBy(array('Equipamentos_fk'=>$id));
+        return $this->getEm()->getRepository(get_class($this))->findBy(array('equipamentoFk'=>$id));
     }
 
     public function getAll() {
