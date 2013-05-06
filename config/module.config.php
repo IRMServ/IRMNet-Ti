@@ -14,6 +14,7 @@ return array(
             'TI\Controller\Caracteristicas' => 'TI\Controller\CaracteristicasController',
             'TI\Controller\TipoEquipamento' => 'TI\Controller\TipoEquipamentoController',
             'TI\Controller\ModeloEquipamento' => 'TI\Controller\ModeloEquipamentoController',
+            'TI\Controller\AlocacaoEquipamento' => 'TI\Controller\AlocacaoEquipamentoController',
             'TI\Controller\Equipamentos' => 'TI\Controller\EquipamentosController',
         ),
     ),
@@ -71,6 +72,30 @@ return array(
                                     'route' => '/store[/:id]',
                                     'defaults' => array(
                                         'controller' => 'TI\Controller\TipoEquipamento',
+                                        'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'alocacao' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/alocacao',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\AlocacaoEquipamento',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\AlocacaoEquipamento',
                                         'action' => 'store',
                                         'id'=>0
                                     ),
@@ -189,6 +214,16 @@ return array(
                                     'route' => '/store[/:id]',
                                     'defaults' => array(
                                         'action' => 'store',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                            'get-detalhe' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/detalhe/:id',
+                                    'defaults' => array(
+                                        'action' => 'equipamento',
                                         'id'=>0
                                     ),
                                 ),

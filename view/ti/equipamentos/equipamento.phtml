@@ -1,0 +1,118 @@
+<script>
+    $(document).ready(function() {
+        $("table a").tooltip();
+        $('#myTab a').click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        })
+    });
+</script>
+
+<?php if ($this->messages):
+    ?>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>       
+        <?php foreach ($this->messages as $messages): ?>
+            <strong>Success!</strong> <?php echo $messages ?>       
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+<div class="row-fluid">
+
+    <div class="span3">
+        <?php include_once(__DIR__ . '/../menu.phtml'); ?>
+
+    </div>
+    <h3>
+        <?php
+        $nome = "Descrição Física para: IRM/";
+        $primeiro = $this->peca[0];
+        $nome .= "{$primeiro->getEquipamentoFk()->getModeloequipamento()->getTipoequipamento()->getSigla()}/";
+        $nome .= "{$primeiro->getEquipamentoFk()->getNome()}";
+        echo $nome;
+        ?>
+
+    </h3>
+    <div class="span9">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active"><a href="#fisica">Descrição física</a></li>
+            <li><a href="#logica">Descrição lógica</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="fisica">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>         
+                        <tr>
+
+                            <th>Caracteristica</th>
+                            <th>Detalhe</th>      
+                        </tr>
+                    </thead>
+                    <tbody>   
+                        <?php
+                        foreach ($this->peca as $iterator):
+                            ?>
+                            <tr>
+                                <td>
+                                    <?php echo $iterator->getCaracteristicasFk()->getCaracteristica(); ?>
+                                </td>
+                                <td>
+                                    <?php echo $iterator->getDetalhe(); ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                    </tbody>
+                    <tfoot>
+                        <tr  align="center">
+                            <td colspan="2" >
+
+
+                            </td>
+
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+            <div class="tab-pane" id="logica">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>         
+                        <tr>
+
+                            <th>Software</th>
+                            <th>Licença</th>      
+                        </tr>
+                    </thead>
+                    <tbody>   
+                        <?php
+                        foreach ($this->licencas->getIterator() as $iterator):
+                            ?>
+                            <tr>
+                                <td>
+                                    <?php echo $iterator->getSoftwaresFk()->getSoftware(); ?>
+                                </td>
+                                <td>
+                                    <?php echo $iterator->getLicenca(); ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                    </tbody>
+                    <tfoot>
+                        <tr  align="center">
+                            <td colspan="2" >
+
+
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -136,5 +136,24 @@ class EquipamentosController extends AbstractActionController {
         
         return new ViewModel(array('peca' => $aCara));
     }
+    
+     public function equipamentoAction() {
+        $id = $this->params()->fromRoute('id');
+        $e = new Equipamento($this->getEntityManager());
+        $equi = $e->getById($id);
+        
+         $ec = new EquipamentoCaracteristica($this->getEntityManager());
+
+        $equipcar = $ec->getAll();
+        $aCara = array();
+        foreach ($equipcar as $s) {
+            if ($s->getEquipamentoFk()->getIdequipamento() == $id) {
+                $aCara[] = $s;
+            }
+        }
+       
+        
+        return new ViewModel(array('licencas' => $equi->getLicencas(), 'equip' => $equi,'peca' => $aCara));
+    }
 
 }
