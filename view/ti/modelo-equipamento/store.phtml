@@ -1,12 +1,33 @@
 <div class="row-fluid">
 
     <div class="span3">
-       <?php
-        
-        include_once(__DIR__ . '/../menu.phtml'); ?>
+        <?php include_once(__DIR__ . '/../menu.phtml'); ?>
 
 
     </div>
+    <script>
+        $(document).ready(function() {
+            $('select[name="fabricantes"]').on('change', function() {
+                $.ajax({
+                    url: '<?php echo $this->url('ti/modelo-equipamento/get-tipos') ?>',
+                    data: {id: $('select[name="fabricantes"]').val()},
+                    beforeSend: function() {
+                        $('select[name="tipoequipamento"]').html('<option>Aguarde...</option>');
+                    },
+                    type: 'post',
+                    success: function(data)
+                    {
+                        $('select[name="tipoequipamento"]').html(data);
+                    },
+                    error: function(data)
+                    {
+                        alert(data);
+                    }
+
+                })
+            })
+        });
+    </script>
     <div class="span9">
 
         <?php

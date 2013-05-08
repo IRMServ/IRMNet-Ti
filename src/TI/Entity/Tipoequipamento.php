@@ -154,5 +154,8 @@ class Tipoequipamento {
     public function getById($id) {
         return $this->getEntityManager()->getRepository(get_class($this))->find($id);
     }
+    public function getByFabricante($id) {
+        return $this->getEntityManager()->getRepository(get_class($this))->findBy(array('fabricantes'=>$id));
+    }
 
 }

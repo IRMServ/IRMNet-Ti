@@ -31,6 +31,28 @@ return array(
                     ),
                 ),
                 'child_routes' => array(
+                    'upload' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/upload',
+                            'defaults' => array(
+                                'action' => 'upload',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                       
+                    ),
+                    'uploadagir' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/uploadagir',
+                            'defaults' => array(
+                                'action' => 'uploadagir',
+                            ),
+                        ),
+                        'may_terminate'=>true,
+                       
+                    ),
                     'fabricantes' => array(
                         'type' => 'segment',
                         'options' => array(
@@ -206,6 +228,16 @@ return array(
                                     ),
                                 ),
                             ),
+                            'get-tipos' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/get-tipo',
+                                    'defaults' => array(
+                                        'action' => 'gettipo',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                     'equipamentos' => array(
@@ -235,6 +267,26 @@ return array(
                                     'route' => '/detalhe/:id',
                                     'defaults' => array(
                                         'action' => 'equipamento',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                            'upload-equipamento' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/upload/:id',
+                                    'defaults' => array(
+                                        'action' => 'upload',
+                                        'id'=>0
+                                    ),
+                                ),
+                            ),
+                            'upload-equipamento-js' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/upload-js/:id',
+                                    'defaults' => array(
+                                        'action' => 'uploadjs',
                                         'id'=>0
                                     ),
                                 ),
@@ -475,6 +527,9 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
     'service_manager'=>array(

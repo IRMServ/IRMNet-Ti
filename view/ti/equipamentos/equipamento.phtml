@@ -34,9 +34,11 @@
 
     </h3>
     <div class="span9">
+       
         <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#fisica">Descrição física</a></li>
             <li><a href="#logica">Descrição lógica</a></li>
+            <li><a href="#imagem">Imagens</a></li>
 
         </ul>
 
@@ -112,6 +114,15 @@
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+            <div class="tab-pane" id="imagem">
+
+                        <?php
+                        foreach ($this->iequi as $iterator):
+                            ?>
+                            <a href="<?php echo $iterator->getArquivo();?>" target="_blank"><img width="140" height="140" src="<?php echo $iterator->getArquivo();?>" class="img-rounded" /></a>
+                        <?php endforeach; ?>
+
             </div>
         </div>
     </div>

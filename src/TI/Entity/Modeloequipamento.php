@@ -47,18 +47,7 @@ class Modeloequipamento
      * @ORM\Column(name="observacao", type="text", nullable=true)
      */
     public $observacao;
-
-    /**
-     * @var \TI\Entity\Tipoequipamento
-     * @Annotation\Type("Zend\Form\Element\Select")
-     * @Annotation\Options({"label":"Tipo de equipamento *: "})
-     * @ORM\ManyToOne(targetEntity="TI\Entity\Tipoequipamento")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="TipoEquipamento", referencedColumnName="idTipoEquipamento")
-     * })
-     */
-    public $tipoequipamento;
-
+    
     /**
      * @var \TI\Entity\Fabricantes
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -69,6 +58,19 @@ class Modeloequipamento
      * })
      */
     public $fabricantes;
+
+    /**
+     * @Annotation\AllowEmpty(true)
+     * @Annotation\Type("Zend\Form\Element\Select")
+     * @Annotation\Options({"label":"Tipo de equipamento *: "})
+     *
+     * @ORM\ManyToOne(targetEntity="TI\Entity\Tipoequipamento")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="TipoEquipamento", referencedColumnName="idTipoEquipamento")
+     * })
+     */
+    public $tipoequipamento;
+
     
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
