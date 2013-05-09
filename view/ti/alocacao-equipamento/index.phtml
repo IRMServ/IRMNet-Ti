@@ -1,9 +1,9 @@
-
 <script src="/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function() {
         $("table a").tooltip();
         $("#tabela").dataTable();
+        $("#tabela_paginate a").addClass('btn').css({'margin-left':'5px'});
     });
 </script>
 <style>
@@ -12,7 +12,7 @@
         float:left;
     }
     #tabela_info{
-        width:45%;
+        width:40%;
         float:left;
     }
     #tabela
@@ -27,14 +27,13 @@
 
     #tabela_paginate{
         float:left;
-        width:40%;
+        width:35%;
     }
     #tabela_paginate a{
-        float:left;
-        width:20%;
-        cursor: pointer;
+        float:left;        
     }
-</style><div class="row-fluid">
+</style>
+<div class="row-fluid">
 
     <div class="span3">
         <?php
