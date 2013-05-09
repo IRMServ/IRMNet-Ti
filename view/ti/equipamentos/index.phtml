@@ -1,9 +1,39 @@
+<script src="/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function() {
         $("table a").tooltip();
+        $("#tabela").dataTable();
     });
 </script>
+<style>
+    .dataTables_filter,.dataTables_length{
+        width:40%;
+        float:left;
+    }
+    #tabela_info{
+        width:45%;
+        float:left;
+    }
+    #tabela
+    {
+        width:100%;
+        float:left;
+    }
+    #tabela th
+    {
+        cursor: pointer;
+    }
 
+    #tabela_paginate{
+        float:left;
+        width:40%;
+    }
+    #tabela_paginate a{
+        float:left;
+        width:20%;
+        cursor: pointer;
+    }
+</style>
 <?php if ($this->messages):
     ?>
     <div class="alert alert-success">
@@ -22,7 +52,7 @@
 
     </div>
     <div class="span9">
-        <table class="table table-striped table-bordered table-hover">
+        <table id="tabela" class="table table-striped table-bordered table-hover">
             <thead>         
                 <tr>
                    
@@ -43,7 +73,7 @@
                         <td><?php echo $usuario->getModeloequipamento()->getTipoequipamento()->getNome(); ?></td>                      
                         <td><?php echo $usuario->getModeloequipamento()->getFabricantes()->getFabricante(); ?></td>                      
                         <td>
-                             <a href="<?php echo $this->url('ti/equipamentos/store',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a>
+                           
                              <a href="<?php echo $this->url('ti/equipamentos/get-detalhe',array('id'=>$usuario->getIdequipamento()));?>" data-toggle="tooltip" title="Descrição do equipamento"  class="btn"><i class="icon-th-list"></i></a>
                              
                         </td>
