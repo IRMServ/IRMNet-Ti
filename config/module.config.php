@@ -39,8 +39,7 @@ return array(
                                 'action' => 'upload',
                             ),
                         ),
-                        'may_terminate'=>true,
-                       
+                        'may_terminate' => true,
                     ),
                     'uploadagir' => array(
                         'type' => 'segment',
@@ -50,8 +49,7 @@ return array(
                                 'action' => 'uploadagir',
                             ),
                         ),
-                        'may_terminate'=>true,
-                       
+                        'may_terminate' => true,
                     ),
                     'fabricantes' => array(
                         'type' => 'segment',
@@ -62,7 +60,7 @@ return array(
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -71,7 +69,7 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'TI\Controller\Fabricantes',
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -86,7 +84,7 @@ return array(
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -95,7 +93,7 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'TI\Controller\TipoEquipamento',
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -110,7 +108,7 @@ return array(
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -119,7 +117,7 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'TI\Controller\AlocacaoEquipamento',
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -130,7 +128,18 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'TI\Controller\AlocacaoEquipamento',
                                         'action' => 'termina',
-                                        'id'=>0
+                                        'id' => 0
+                                    ),
+                                ),
+                            ),
+                            'realocar' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/realocar/:id',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\AlocacaoEquipamento',
+                                        'action' => 'realocar',
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -145,7 +154,7 @@ return array(
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -154,7 +163,7 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'TI\Controller\Softwares',
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -169,7 +178,7 @@ return array(
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -178,7 +187,7 @@ return array(
                                     'defaults' => array(
                                         'controller' => 'TI\Controller\Licencas',
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -193,7 +202,7 @@ return array(
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -201,7 +210,7 @@ return array(
                                     'route' => '/store[/:id]',
                                     'defaults' => array(
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -211,12 +220,12 @@ return array(
                         'type' => 'segment',
                         'options' => array(
                             'route' => '/modelo-equipamento',
-                            'defaults' => array(                                
+                            'defaults' => array(
                                 'controller' => 'TI\Controller\ModeloEquipamento',
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -224,7 +233,7 @@ return array(
                                     'route' => '/store[/:id]',
                                     'defaults' => array(
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -234,7 +243,7 @@ return array(
                                     'route' => '/get-tipo',
                                     'defaults' => array(
                                         'action' => 'gettipo',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -249,7 +258,7 @@ return array(
                                 'action' => 'index',
                             ),
                         ),
-                        'may_terminate'=>true,
+                        'may_terminate' => true,
                         'child_routes' => array(
                             'store' => array(
                                 'type' => 'segment',
@@ -257,7 +266,7 @@ return array(
                                     'route' => '/store[/:id]',
                                     'defaults' => array(
                                         'action' => 'store',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -267,7 +276,7 @@ return array(
                                     'route' => '/detalhe/:id',
                                     'defaults' => array(
                                         'action' => 'equipamento',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -277,7 +286,7 @@ return array(
                                     'route' => '/upload/:id',
                                     'defaults' => array(
                                         'action' => 'upload',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -287,7 +296,7 @@ return array(
                                     'route' => '/upload-js/:id',
                                     'defaults' => array(
                                         'action' => 'uploadjs',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -297,7 +306,7 @@ return array(
                                     'route' => '/descricao-logica/:id',
                                     'defaults' => array(
                                         'action' => 'descricaologica',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -307,7 +316,7 @@ return array(
                                     'route' => '/descricao-fisica/:id',
                                     'defaults' => array(
                                         'action' => 'descricaofisica',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -317,7 +326,7 @@ return array(
                                     'route' => '/store/caracteristica/:id',
                                     'defaults' => array(
                                         'action' => 'storestorecaracteristica',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -327,7 +336,7 @@ return array(
                                     'route' => '/store/licencas/:id',
                                     'defaults' => array(
                                         'action' => 'storelicencas',
-                                        'id'=>0
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -458,40 +467,28 @@ return array(
                         ),
                         'may_terminate' => true,
                         'child_routes' => array(
-                            'relatorio' => array(
-                                'type' => 'Literal',
+                            'impressao-periodo' => array(
+                                'type' => 'Segment',
                                 'may_terminate' => true,
                                 'options' => array(
-                                    'route' => '/relatorio',
+                                    'route' => '/periodo/:ano/:mes',
                                     'defaults' => array(
-                                        'action' => 'index',
-                                        'controller' => 'TI\Controller\Impressao',
+                                        'action' => 'periodo',
+                                        'ano' => 0,
+                                        'mes' => 0
                                     ),
                                 ),
-                                'child_routes' => array(
-                                    'crescente' => array(
-                                        'type' => 'Literal',
-                                        'may_terminate' => true,
-                                        'options' => array(
-                                            'route' => '/crescente',
-                                            'defaults' => array(
-                                                'action' => 'ordemcres',
-                                                'controller' => 'TI\Controller\Impressao',
-                                            ),
-                                        ),
+                            ),
+                            'impressao-dia' => array(
+                                'type' => 'Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/periodo/:data',
+                                    'defaults' => array(
+                                        'action' => 'detalhedia',
+                                        'data' => 0,
                                     ),
-                                    'decrescente' => array(
-                                        'type' => 'Literal',
-                                        'may_terminate' => true,
-                                        'options' => array(
-                                            'route' => '/decrescente',
-                                            'defaults' => array(
-                                                'action' => 'ordemdesc',
-                                                'controller' => 'TI\Controller\Impressao',
-                                            ),
-                                        ),
-                                    ),
-                                )
+                                ),
                             ),
                         )
                     ),
@@ -532,14 +529,13 @@ return array(
             'ViewJsonStrategy',
         ),
     ),
-    'service_manager'=>array(
-        'factories'=>array(
+    'service_manager' => array(
+        'factories' => array(
             'FabricantesPair' => function($sm) {
                 $em = $sm->get('doctrine.entitymanager.orm_default');
                 $s = $em->getRepository('TI\Entity\Fabricantes')->findAll();
                 $farray = array();
-                foreach($s as $f)
-                {
+                foreach ($s as $f) {
                     $farray[$f->getIdfabricantes()] = $f->getFabricante();
                 }
                 return $farray;
@@ -548,8 +544,7 @@ return array(
                 $em = $sm->get('doctrine.entitymanager.orm_default');
                 $s = $em->getRepository('TI\Entity\Softwares')->findAll();
                 $farray = array();
-                foreach($s as $f)
-                {
+                foreach ($s as $f) {
                     $farray[$f->getIdsoftwares()] = $f->getSoftware();
                 }
                 return $farray;
@@ -558,8 +553,7 @@ return array(
                 $em = $sm->get('doctrine.entitymanager.orm_default');
                 $s = $em->getRepository('TI\Entity\Tipoequipamento')->findAll();
                 $farray = array();
-                foreach($s as $f)
-                {
+                foreach ($s as $f) {
                     $farray[$f->getIdtipoequipamento()] = $f->getNome();
                 }
                 return $farray;
@@ -568,8 +562,7 @@ return array(
                 $em = $sm->get('doctrine.entitymanager.orm_default');
                 $s = $em->getRepository('TI\Entity\Licencas')->findAll();
                 $farray = array();
-                foreach($s as $f)
-                {
+                foreach ($s as $f) {
                     $farray[$f->getIdlicencas()] = "{$f->getSoftwaresFk()->getSoftware()} - {$f->getLicenca()}";
                 }
                 return $farray;
@@ -578,8 +571,7 @@ return array(
                 $em = $sm->get('doctrine.entitymanager.orm_default');
                 $s = $em->getRepository('TI\Entity\Caracteristicas')->findAll();
                 $farray = array();
-                foreach($s as $f)
-                {
+                foreach ($s as $f) {
                     $farray[$f->getIdcaracteristicas()] = $f->getCaracteristica();
                 }
                 return $farray;
@@ -588,8 +580,7 @@ return array(
                 $em = $sm->get('doctrine.entitymanager.orm_default');
                 $s = $em->getRepository('TI\Entity\Modeloequipamento')->findAll();
                 $farray = array();
-                foreach($s as $f)
-                {
+                foreach ($s as $f) {
                     $farray[$f->getIdmodeloequipamento()] = $f->getModelo();
                 }
                 return $farray;
@@ -598,8 +589,7 @@ return array(
                 $em = $sm->get('doctrine.entitymanager.orm_default');
                 $s = $em->getRepository('TI\Entity\Equipamento')->findAll();
                 $farray = array();
-                foreach($s as $f)
-                {
+                foreach ($s as $f) {
                     $nome = 'IRM/';
                     $nome .= "{$f->getModeloequipamento()->getTipoequipamento()->getSigla()}/";
                     $nome .= "{$f->getNome()}";
@@ -608,5 +598,5 @@ return array(
                 return $farray;
             },
         )
-    ), 
+    ),
 );

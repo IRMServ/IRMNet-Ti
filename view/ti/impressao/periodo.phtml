@@ -1,0 +1,148 @@
+<script src="/js/highcharts.js"></script>
+<?php
+
+function nomeMes($mes) {
+    $nome = '';
+    switch ($mes) {
+        case 1:
+            $nome = 'Janeiro';
+            break;
+        case 2:
+            $nome = 'Fevereiro';
+            break;
+        case 3 :
+            $nome = 'Março';
+            break;
+        case 4:
+            $nome = 'Abril';
+            break;
+        case 5:
+            $nome = 'Maio';
+            break;
+        case 6:
+            $nome = 'Junho';
+            break;
+        case 7:
+            $nome = 'Julho';
+            break;
+        case 8:
+            $nome = 'Agosto';
+            break;
+        case 9:
+            $nome = 'Setembro';
+            break;
+        case 10:
+            $nome = 'Outubro';
+            break;
+        case 11:
+            $nome = 'Novembro';
+            break;
+        case 12:
+            $nome = 'Dezembro';
+            break;
+    }
+    return $nome;
+}
+?>
+<script>
+    $(function() {
+        $('#container').highcharts({
+            chart: {
+                type: 'column',
+                margin: [50, 50, 100, 80]
+            },
+            credits: {
+                enabled: false
+            },
+            title: {
+                text: '<?php echo nomeMes($this->mes) ?> de <?php echo $this->ano ?>'
+            },
+            xAxis: {
+                categories: [
+<?php
+echo '"'.implode('","', array_keys($this->dia)).'"';
+?>
+                ],
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Impressões (folhas)'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            series: [{
+                    name: 'Impressões',
+                    data: [<?php
+echo implode(',', array_values($this->dia));
+?>],
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        x: 4,
+                        y: 10,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
+        });
+    });
+
+</script>
+<div class="row-fluid">
+
+    <div class="span3">
+        <?php include_once(__DIR__ . '/../menu.phtml'); ?>
+
+
+    </div>
+    <div class="span9">
+        <h3>Impressões de <?php echo nomeMes($this->mes) ?> de <?php echo $this->ano ?></h3>
+       
+        <div id="container">
+
+        </div>
+ <table class="table table-striped table-bordered table-hover">
+            <thead>         
+                <tr>
+                    <th>Dia</th>
+                    <th>Folhas Impressas</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+               
+                foreach ($this->dia as $dia => $impressoes): ?>
+                    <tr>
+                        <td><?php echo $dia ?></td>
+                        <td><?php echo $impressoes ?></td>
+
+
+                    </tr>
+                <?php endforeach; ?>
+
+            </tbody>
+            <tfoot>
+                <tr  align="center">
+
+                </tr>
+            </tfoot>
+
+        </table>
+    </div>
+</div>
