@@ -490,6 +490,17 @@ return array(
                                     ),
                                 ),
                             ),
+                            'impressao-usuario' => array(
+                                'type' => 'Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/usuario/:usuario/periodo/:periodo',
+                                    'defaults' => array(
+                                        'action' => 'detalheusuario',
+                                        'usuario' => 0,
+                                    ),
+                                ),
+                            ),
                         )
                     ),
                 )

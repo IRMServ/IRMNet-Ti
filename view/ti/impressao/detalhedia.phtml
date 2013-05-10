@@ -46,25 +46,28 @@ function nomeMes($mes) {
 ?>
 <script>
     $(function() {
+       
+    
         $('#container').highcharts({
             chart: {
-                type: 'column',
-                margin: [50, 50, 100, 80]
+                type: 'bar',
+                margin: [50, 50, 100, 80],
+                height: <?php echo count($this->dados);?> * 80
             },
             credits: {
                 enabled: false
             },
             title: {
-                text: '<?php echo nomeMes($this->mes) ?> de <?php echo $this->ano ?>'
+                text: ''
             },
             xAxis: {
                 categories: [
 <?php
-echo '"' . implode('","', array_keys($this->dia)) . '"';
+echo '"' . implode('","', array_keys($this->dados)) . '"';
 ?>
                 ],
                 labels: {
-                    rotation: -45,
+                   overflow: 'justify',
                     align: 'right',
                     style: {
                         fontSize: '13px',
@@ -78,17 +81,24 @@ echo '"' . implode('","', array_keys($this->dia)) . '"';
                     text: 'Impressões (folhas)'
                 }
             },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
             legend: {
                 enabled: false
             },
             series: [{
                     name: 'Impressões',
                     data: [<?php
-echo implode(',', array_values($this->dia));
+echo implode(',', array_values($this->dados));
 ?>],
                     dataLabels: {
-                        enabled: true,
-                        rotation: -90,
+                        enabled: false,
+                       
                         color: '#FFFFFF',
                         align: 'right',
                         x: 4,
@@ -125,14 +135,14 @@ echo implode(',', array_values($this->dia));
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($this->dia as $dia => $impressoes): ?>
+                <?php $i=0; foreach ($this->dados as $dia => $impressoes): ?>
                     <tr>
-                        <td><a href="<?php echo $this->url('ti/impressao/impressao-dia', array('data' => str_replace('/', '-', $dia))); ?>"><?php echo $dia ?></a></td>
+                        <td><a href="<?php echo $this->url('ti/impressao/impressao-usuario', array('usuario' =>$this->user[$i],'periodo' => str_replace('/', '-', $this->periodo))); ?>"><?php echo $dia ?></a></td>
                         <td><?php echo $impressoes ?></td>
 
 
                     </tr>
-                <?php endforeach; ?>
+                <?php $i++; endforeach; ?>
 
             </tbody>
             <tfoot>

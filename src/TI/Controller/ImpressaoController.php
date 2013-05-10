@@ -107,16 +107,16 @@ class ImpressaoController extends AbstractActionController {
     public function periodoAction() {
         $mes = $this->params()->fromRoute('mes');
         $ano = $this->params()->fromRoute('ano');
-        
-        $file= "C:\Program Files (x86)\PaperCut Print Logger\logs\csv\monthly\papercut-print-log-{$mes}-{$ano}.csv";
-       
+
+        $file = "C:\Program Files (x86)\PaperCut Print Logger\logs\csv\monthly\papercut-print-log-{$ano}-{$mes}.csv";
+
         $dia = array();
         $lines = file($file);
 
-        for ($i = 2; $i <= count($lines)-1; $i++) {
+        for ($i = 2; $i <= count($lines) - 1; $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $lines[$i]);
             $d = explode(' ', $Time);
-         
+
             $d = implode('/', array_reverse(explode('-', $d[0])));
             if (isset($dia[$d])) {
                 $dia[$d] += $Pages * $Copies;
@@ -128,13 +128,82 @@ class ImpressaoController extends AbstractActionController {
 
 
 
-        return new ViewModel(array('dia' => $dia,'mes'=>$ano,'ano'=>$mes));
+        return new ViewModel(array('dia' => $dia, 'mes' => $mes, 'ano' => $ano));
     }
-    
-    public function detalhediaAction()
-    {
-          $data = $this->params()->fromRoute('data');
-        
+
+    public function detalhediaAction() {
+        $data = $this->params()->fromRoute('data');
+        list($dia, $mes, $ano) = explode('-', $data);
+
+        $file = file("C:\Program Files (x86)\PaperCut Print Logger\logs\csv\monthly\papercut-print-log-{$ano}-{$mes}.csv");
+        $count = array();
+        $aCount = array();
+        for ($i = 2; $i <= count($file); $i++) {
+            @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
+            $ext = explode(' ', $Time);
+            $datac = implode('-', array_reverse(explode('-', $ext[0])));
+            if ($datac == $data) {
+                if (isset($count[$User])) {
+                    $count[$User] += $Pages * $Copies;
+                } else {
+                    $count[$User] = $Pages * $Copies;
+                }
+                if (empty($count[$User])) {
+                    unset($count[$User]);
+                }
+            }
+        }
+
+
+        arsort($count);
+        $ldapconfig = $this->getServiceLocator()->get('Config');
+        $ldap = $this->getServiceLocator()->get('Ldap');
+        $config = new Config($ldapconfig['ldap-config'], true);
+        $user = array();
+        foreach ($count as $key => $value) {
+            $result = $ldap->search("(samaccountname={$key})", $config->server->baseDn, \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
+            foreach ($result as $item) {
+                $aCount[$item['displayname'][0]] = $value;
+                $user[] = $key;
+            }
+        }
+        return new ViewModel(array('dados' => $aCount, 'user' => $user, 'periodo' => $data));
+    }
+
+    public function detalheusuarioAction() {
+        $data = $this->params()->fromRoute('periodo');
+        $usuario = $this->params()->fromRoute('usuario');
+        list($dia, $mes, $ano) = explode('-', $data);
+
+        $file = file("C:\Program Files (x86)\PaperCut Print Logger\logs\csv\monthly\papercut-print-log-{$ano}-{$mes}.csv");
+       
+        $documentos = array();
+       
+        for ($i = 2; $i <= count($file); $i++) {
+            @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
+
+            if ($usuario == $User) {
+
+                if (!array_key_exists($DocumentName, $documentos)) {
+                    $documentos[$DocumentName] = $Pages * $Copies;                   
+                }
+            }
+        }
+
+
+
+
+        $ldapconfig = $this->getServiceLocator()->get('Config');
+        $ldap = $this->getServiceLocator()->get('Ldap');
+        $config = new Config($ldapconfig['ldap-config'], true);
+        $nome = '';
+
+        $result = $ldap->search("(samaccountname={$usuario})", $config->server->baseDn, \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
+        foreach ($result as $item) {
+            $nome = $item['displayname'][0];
+        }
+
+        return new ViewModel(array('dados' => $documentos, 'user' => $nome, 'periodo' => $data));
     }
 
 }
