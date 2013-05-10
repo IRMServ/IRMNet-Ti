@@ -70,7 +70,7 @@ function nomeMes($mes) {
             <tbody>
                 <?php $i=0; foreach ($this->dados as $dia => $impressoes): ?>
                     <tr>
-                        <td><?php echo str_replace('"','',$dia); ?></td>
+                        <td><?php echo htmlentities(str_replace('"','',$dia)); ?></td>
                         <td><?php echo $impressoes ?></td>
 
 
