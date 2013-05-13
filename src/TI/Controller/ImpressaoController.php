@@ -171,7 +171,7 @@ class ImpressaoController extends AbstractActionController {
                 
             }
         }
-        return new ViewModel(array('dados' => $aCount, 'user' => $user, 'periodo' => $data));
+        return new ViewModel(array('dados' => $aCount, 'user' => $user, 'periodo' => $data,'mes'=>$mes,'ano'=>$ano));
     }
 
     public function detalheusuarioAction() {
