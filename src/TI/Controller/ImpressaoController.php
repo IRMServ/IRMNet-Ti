@@ -163,8 +163,12 @@ class ImpressaoController extends AbstractActionController {
         foreach ($count as $key => $value) {
             $result = $ldap->search("(samaccountname={$key})", $config->server->baseDn, \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
             foreach ($result as $item) {
-                $aCount[$item['displayname'][0]] = $value;
+                if(isset($item['displayname']))
+                {
+                    $aCount[$item['displayname'][0]] = $value;
                 $user[] = $key;
+                }
+                
             }
         }
         return new ViewModel(array('dados' => $aCount, 'user' => $user, 'periodo' => $data));
@@ -187,6 +191,10 @@ class ImpressaoController extends AbstractActionController {
 
                 if (!array_key_exists($DocumentName, $documentos)) {
                     $documentos[$DocumentName] = $Pages * $Copies;                   
+                }
+                else
+                {
+                     $documentos[$DocumentName] += $Pages * $Copies;
                 }
             }
         }
