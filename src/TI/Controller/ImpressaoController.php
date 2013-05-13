@@ -272,12 +272,23 @@ class ImpressaoController extends AbstractActionController {
             }
         }
 
-
+ $ldapconfig = $this->getServiceLocator()->get('Config');
+        $ldap = $this->getServiceLocator()->get('Ldap');
+        $config = new Config($ldapconfig['ldap-config'], true);
+        $user = array();
+        foreach ($users as $login) {
+            $result = $ldap->search("(samaccountname={$login})", $config->server->baseDn, \Zend\Ldap\Ldap::SEARCH_SCOPE_SUB);
+            foreach ($result as $item) {
+                if (isset($item['displayname'])) {
+                    $user[] = $item['displayname'][0];
+                }
+            }
+        }
 
 
         
 
-        return new ViewModel(array('dados' => $documentos, 'user' => $usuario, 'periodo' => $data));
+        return new ViewModel(array('dados' => $documentos, 'user' => $usuario, 'periodo' => $data,'users' =>$user));
     }
 
 }
