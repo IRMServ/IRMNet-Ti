@@ -55,7 +55,7 @@ function nomeMes($mes) {
     <div class="span9">
         <h3>Impressões de <?php
             list($dia, $mes, $ano) = explode('-', $this->periodo);
-            $titulo = " {$user} em";
+            $titulo = urldecode($user)." em";
             $titulo .= " {$dia} de " . nomeMes($mes) . " $ano";
             echo $titulo;
             ?></h3>
