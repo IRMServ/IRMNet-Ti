@@ -182,7 +182,8 @@ class ImpressaoController extends AbstractActionController {
         for ($i = 2; $i <= count($file); $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
 
-            if ($usuario == $User) {
+            $datac = explode(' ', $Time);
+            if (($usuario == $User) && (implode('-', array_reverse(explode('-', $datac[0]))) == $data )) {
 
                 if (!array_key_exists($DocumentName, $documentos)) {
                     $documentos[$DocumentName] = $Pages * $Copies;                   
