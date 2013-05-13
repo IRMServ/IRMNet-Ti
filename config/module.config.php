@@ -482,10 +482,23 @@ return array(
                             'impressao-dia' => array(
                                 'type' => 'Segment',
                                 'may_terminate' => true,
+                              
                                 'options' => array(
                                     'route' => '/periodo/:data',
                                     'defaults' => array(
                                         'action' => 'detalhedia',
+                                        'data' => 0,
+                                    ),
+                                ),
+                            ),
+                            'impressao-dia-printer' => array(
+                                'type' => 'Segment',
+                                'may_terminate' => true,
+                              
+                                'options' => array(
+                                    'route' => '/periodo/:data/impressora',
+                                    'defaults' => array(
+                                        'action' => 'detalhediaprinter',
                                         'data' => 0,
                                     ),
                                 ),
@@ -498,6 +511,17 @@ return array(
                                     'defaults' => array(
                                         'action' => 'detalheusuario',
                                         'usuario' => 0,
+                                    ),
+                                ),
+                            ),
+                            'impressao-printer' => array(
+                                'type' => 'Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/impressora/:printer/periodo/:periodo',
+                                    'defaults' => array(
+                                        'action' => 'detalheprinter',
+                                        'printer' => 0,
                                     ),
                                 ),
                             ),
