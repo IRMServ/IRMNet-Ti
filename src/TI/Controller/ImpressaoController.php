@@ -142,10 +142,10 @@ class ImpressaoController extends AbstractActionController {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             $ext = explode(' ', $Time);
             $datac = implode('-', array_reverse(explode('-', $ext[0])));
-            
+
             if ($datac == $data) {
                 if (isset($count[$User])) {
-                   
+
                     $count[$User] += $Pages * $Copies;
                 } else {
                     $count[$User] = $Pages * $Copies;
@@ -171,11 +171,12 @@ class ImpressaoController extends AbstractActionController {
                 }
             }
         }
-        return new ViewModel(array('dados' => $aCount, 'user' => $user, 'periodo' => $data,'mes'=>$mes,'ano'=>$ano));
+        return new ViewModel(array('dados' => $aCount, 'user' => $user, 'periodo' => $data, 'mes' => $mes, 'ano' => $ano));
     }
+
     public function detalhediaprinterAction() {
         $data = $this->params()->fromRoute('data');
-     
+
         list($dia, $mes, $ano) = explode('-', $data);
 
         $file = file("C:\Program Files (x86)\PaperCut Print Logger\logs\csv\monthly\papercut-print-log-{$ano}-{$mes}.csv");
@@ -185,10 +186,10 @@ class ImpressaoController extends AbstractActionController {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             $ext = explode(' ', $Time);
             $datac = implode('-', array_reverse(explode('-', $ext[0])));
-            
+
             if ($datac == $data) {
                 if (isset($count[$Printer])) {
-                   
+
                     $count[$Printer] += $Pages * $Copies;
                 } else {
                     $count[$Printer] = $Pages * $Copies;
@@ -201,9 +202,9 @@ class ImpressaoController extends AbstractActionController {
 
 
         arsort($count);
-        
-       
-        return new ViewModel(array('dados' => $count,  'periodo' => $data,'mes'=>$mes,'ano'=>$ano));
+
+
+        return new ViewModel(array('dados' => $count, 'periodo' => $data, 'mes' => $mes, 'ano' => $ano));
     }
 
     public function detalheusuarioAction() {
@@ -218,15 +219,13 @@ class ImpressaoController extends AbstractActionController {
         for ($i = 2; $i <= count($file); $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             $datac = explode(' ', $Time);
-           
+
             if (($usuario == $User) && (implode('-', array_reverse(explode('-', $datac[0]))) == $data )) {
 
                 if (!array_key_exists($DocumentName, $documentos)) {
                     $documentos[$DocumentName] = $Pages * $Copies;
-                }
-                else
-                {
-                     $documentos[$DocumentName] += $Pages * $Copies;
+                } else {
+                    $documentos[$DocumentName] += $Pages * $Copies;
                 }
             }
         }
@@ -246,33 +245,33 @@ class ImpressaoController extends AbstractActionController {
 
         return new ViewModel(array('dados' => $documentos, 'user' => $nome, 'periodo' => $data));
     }
+
     public function detalheprinterAction() {
         $data = $this->params()->fromRoute('periodo');
         $usuario = $this->params()->fromRoute('printer');
-        
+
         list($dia, $mes, $ano) = explode('-', $data);
 
         $file = file("C:\Program Files (x86)\PaperCut Print Logger\logs\csv\monthly\papercut-print-log-{$ano}-{$mes}.csv");
 
         $documentos = array();
-
+        $users = array();
         for ($i = 2; $i <= count($file); $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             $datac = explode(' ', $Time);
-           
+
             if ((urldecode($usuario) == $Printer) && (implode('-', array_reverse(explode('-', $datac[0]))) == $data )) {
 
                 if (!array_key_exists($DocumentName, $documentos)) {
                     $documentos[$DocumentName] = $Pages * $Copies;
-                }
-                else
-                {
-                     $documentos[$DocumentName] += $Pages * $Copies;
+                    $users[] = $User;
+                } else {
+                    $documentos[$DocumentName] += $Pages * $Copies;
                 }
             }
         }
 
- $ldapconfig = $this->getServiceLocator()->get('Config');
+        $ldapconfig = $this->getServiceLocator()->get('Config');
         $ldap = $this->getServiceLocator()->get('Ldap');
         $config = new Config($ldapconfig['ldap-config'], true);
         $user = array();
@@ -286,9 +285,9 @@ class ImpressaoController extends AbstractActionController {
         }
 
 
-        
 
-        return new ViewModel(array('dados' => $documentos, 'user' => $usuario, 'periodo' => $data,'users' =>$user));
+
+        return new ViewModel(array('dados' => $documentos, 'user' => $usuario, 'periodo' => $data, 'users' => $user));
     }
 
 }
