@@ -55,18 +55,26 @@
             <thead>         
                 <tr>
                    
+                  
                     <th>Software</th>
                     <th>Licença</th>
-                   
+                    <th>Equipamento</th>
+
                     <th>Opções</th>
 
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($this->fab as $usuario): ?>
+<?php foreach ($this->fab as $usuario): ?>
                     <tr>
                         <td><?php echo $usuario->getSoftwaresFk()->getSoftware(); ?></td>
                         <td><?php echo $usuario->getLicenca(); ?></td>
+                        <td><?php
+                $e = $usuario->getEquipamento();
+                foreach ($e as $equi) {
+                    echo $equi->getNome();
+                }
+    ?></td>
                         <td> <a href="<?php echo $this->url('ti/licencas/store',array('id'=>$usuario->getIdlicencas()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a></td>
 
 

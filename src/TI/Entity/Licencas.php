@@ -50,7 +50,7 @@ class Licencas
      *   }
      * )
      */
-    private $equipamento;
+    public $equipamento;
 
     /**
      * @var \TI\Entity\Softwares
