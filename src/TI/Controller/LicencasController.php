@@ -55,5 +55,13 @@ class LicencasController extends AbstractActionController {
         }
         return new ViewModel(array('form'=>$form));        
     }
+    public function removeAction() {
+        $lic = new Licencas($this->getEntityManager());
+        $id = $this->params()->fromRoute('id');
+        $l = $lic->getById($id);
+        $l->setEm($this->getEntityManager());
+        $l->remove();
+        $this->redirect()->toRoute('ti/licencas');
+    }
 
 }

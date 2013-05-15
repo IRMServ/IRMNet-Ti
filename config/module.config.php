@@ -191,6 +191,17 @@ return array(
                                     ),
                                 ),
                             ),
+                            'remove' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/remove/:id',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\Licencas',
+                                        'action' => 'remove',
+                                        'id' => 0
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                     'caracteristicas' => array(

@@ -171,6 +171,10 @@ class Licencas
     public function setEm($em) {
         $this->em = $em;
     }
-
+ public function remove()
+    {
+        $this->getEm()->remove($this);
+        $this->getEm()->flush();
+    }
 
 }

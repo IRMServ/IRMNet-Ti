@@ -75,7 +75,9 @@
                     echo $equi->getNome();
                 }
     ?></td>
-                        <td> <a href="<?php echo $this->url('ti/licencas/store',array('id'=>$usuario->getIdlicencas()));?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a></td>
+                        <td> 
+                             <a href="<?php echo $this->url('ti/licencas/store', array('id' => $usuario->getIdlicencas())); ?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-pencil"></i></a>
+                            <a href="<?php echo $this->url('ti/licencas/remove', array('id' => $usuario->getIdlicencas())); ?>" data-toggle="tooltip" title="Editar registro"  class="btn"><i class="icon-trash"></i></a></td>
 
 
                     </tr>
