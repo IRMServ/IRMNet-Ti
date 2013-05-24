@@ -70,9 +70,11 @@
                         <td><?php echo $usuario->getSoftwaresFk()->getSoftware(); ?></td>
                         <td><?php echo $usuario->getLicenca(); ?></td>
                         <td><?php
-                $e = $usuario->getEquipamento();
-                foreach ($e as $equi) {
-                    echo $equi->getNome();
+                 $e = $usuario->getEquipamento()->getIterator();
+              
+                while ($e->valid()) {
+                    echo "IRM/{$e->current()->getModeloequipamento()->getTipoequipamento()->getSigla()}/{$e->current()->getNome()}<br/>";
+                   $e->next();
                 }
     ?></td>
                         <td> 
