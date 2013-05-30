@@ -43,7 +43,7 @@ class AlocacaoEquipamentoController extends AbstractActionController {
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
-                $inicio = empty($data['datainicio']) || !isset($data['datainicio']) || is_null($data['datainicio']) ? new DateTime('now') : $data['datainicio'];
+                $inicio = empty($data['datainicio']) || !isset($data['datainicio']) || is_null($data['datainicio']) ? new DateTime('now') :new DateTime(implode('-',array_reverse(explode('/',$data['datainicio']))));;
                 $fab->setDatainicio($inicio);
                 $fab->populate((array) $data);
                 $fab->store();
