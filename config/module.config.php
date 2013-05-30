@@ -18,6 +18,54 @@ return array(
             'TI\Controller\Equipamentos' => 'TI\Controller\EquipamentosController',
         ),
     ),
+    'acl' => array(
+        'TI' => array(
+            'TI' => array(
+                'TI\Controller\Index:index',
+                'TI\Controller\Impressao:index',
+                'TI\Controller\Impressao:periodo',
+                'TI\Controller\Impressao:detalhedia',
+                'TI\Controller\Impressao:detalhediaprinter',
+                'TI\Controller\Impressao:detalheusuario',
+                'TI\Controller\Impressao:detalheprinter',
+                'TI\Controller\AlocacaoEquipamento:index',
+                'TI\Controller\AlocacaoEquipamento:store',
+                'TI\Controller\AlocacaoEquipamento:realocar',
+                'TI\Controller\AlocacaoEquipamento:terminar',
+                'TI\Controller\Caracteristicas:index',
+                'TI\Controller\Caracteristicas:store',
+                'TI\Controller\Equipamentos:index',
+                'TI\Controller\Equipamentos:store',
+                'TI\Controller\Softwares:index',
+                'TI\Controller\Softwares:store',
+                'TI\Controller\TipoEquipamento:index',
+                'TI\Controller\TipoEquipamento:store',
+                'TI\Controller\Licencas:index',
+                'TI\Controller\Licencas:store',
+                'TI\Controller\Licencas:remove',
+                'TI\Controller\ModeloEquipamento:index',
+                'TI\Controller\ModeloEquipamento:store',
+                'TI\Controller\ModeloEquipamento:gettipo',
+                'TI\Controller\Fabricantes:index',
+                'TI\Controller\Fabricantes:store',
+                'TI\Controller\HelpDesk:index',
+                'TI\Controller\HelpDesk:store',
+                'TI\Controller\HelpDesk:chamado',
+                'TI\Controller\HelpDesk:resposta',
+                'TI\Controller\HelpDesk:changeprioridade',
+                'TI\Controller\HelpDesk:close',
+                'TI\Controller\HelpDesk:avaliar',
+                'TI\Controller\HelpDesk:indicadores',
+                'TI\Controller\Equipamentos:storestorecaracteristica',
+                'TI\Controller\Equipamentos:storelicencas',
+                'TI\Controller\Equipamentos:descricaologica',
+                'TI\Controller\Equipamentos:descricaofisica',
+                'TI\Controller\Equipamentos:equipamento',
+                'TI\Controller\Equipamentos:upload',
+                'TI\Controller\Equipamentos:uploadjs',
+            ),
+        )
+    ),
     'router' => array(
         'routes' => array(
             'ti' => array(
@@ -493,7 +541,6 @@ return array(
                             'impressao-dia' => array(
                                 'type' => 'Segment',
                                 'may_terminate' => true,
-                              
                                 'options' => array(
                                     'route' => '/periodo/:data',
                                     'defaults' => array(
@@ -505,7 +552,6 @@ return array(
                             'impressao-dia-printer' => array(
                                 'type' => 'Segment',
                                 'may_terminate' => true,
-                              
                                 'options' => array(
                                     'route' => '/periodo/:data/impressora',
                                     'defaults' => array(
@@ -574,6 +620,11 @@ return array(
         'strategies' => array(
             'ViewJsonStrategy',
         ),
+    ),
+    'view_helpers' => array(
+        'invokables' => array(
+            'barra' => 'TI\View\Helper\Barra'
+        )
     ),
     'service_manager' => array(
         'factories' => array(
