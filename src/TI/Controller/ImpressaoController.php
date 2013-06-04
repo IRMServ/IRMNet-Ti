@@ -98,6 +98,7 @@ class ImpressaoController extends AbstractActionController {
             $periodo['mes'][] = str_replace('.csv', '', $mes);
             $periodo['ano'][] = $ano;
             $periodo['total'][] = $total;
+            $total = 0;
         }
 
 
