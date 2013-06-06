@@ -55,6 +55,7 @@
                     </thead>
                     <tbody>   
                         <?php
+                        if($this->peca):
                         foreach ($this->peca as $iterator):
                             ?>
                             <tr>
@@ -65,7 +66,7 @@
                                     <?php echo $iterator->getDetalhe(); ?>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php  endforeach; endif; ?>
 
                     </tbody>
                     <tfoot>
@@ -92,6 +93,7 @@
                     </thead>
                     <tbody>   
                         <?php
+                        if($this->licenca):
                         foreach ($this->licencas->getIterator() as $iterator):
                             ?>
                             <tr>
@@ -102,7 +104,7 @@
                                     <?php echo $iterator->getLicenca(); ?>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endforeach;endif; ?>
 
                     </tbody>
                     <tfoot>
@@ -118,10 +120,11 @@
             <div class="tab-pane" id="imagem">
 
                         <?php
+                        if($this->iequi):
                         foreach ($this->iequi as $iterator):
                             ?>
                             <a href="<?php echo $iterator->getArquivo();?>" target="_blank"><img width="140" height="140" src="<?php echo $iterator->getArquivo();?>" class="img-rounded" /></a>
-                        <?php endforeach; ?>
+                        <?php endforeach;endif; ?>
 
             </div>
         </div>
