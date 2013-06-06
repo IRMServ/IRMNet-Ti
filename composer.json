@@ -1,6 +1,6 @@
 {
     "name": "irmnet/ti",
-    "description": "Compras module for IRMServices intranet.", 
+    "description": "TI module for IRMServices intranet.", 
     "keywords": [
     "framework",
     "zf2",
