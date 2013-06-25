@@ -1,5 +1,10 @@
 <link rel="stylesheet" type="text/css" href="/css/bootstrap-editable.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-editable.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-editable.css">
+<link rel="stylesheet" type="text/css" href="/css/jquery.pnotify.default.css">
+<link rel="stylesheet" type="text/css" href="/css/jquery.pnotify.default.icons.css">
 <script type="text/javascript" src="/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="/js/jquery.pnotify.js"></script>
 <script>
     $(document).ready(function() {
         $("table a").tooltip();
@@ -8,18 +13,25 @@
             $(this).tab('show');
         });
         $("#caracteristica a").editable({
-            url: "<?php echo $this->url('ti/equipamentos/update');?>",
+            url: "<?php echo $this->url('ti/equipamentos/update'); ?>",
             ajaxOptions: {
                 dataType: 'json' //assuming json response
             },
             success: function(data, config)
             {
-                alert(data.result);
+
+                $.pnotify({
+                    title: 'Sucesso!',
+                    text: 'Registro alterado!',
+                    type: 'success',
+                    history: false
+                });
+
             },
             params: function(params)
             {
                 params.pk = <?php echo $this->peca[0]->getEquipamentoFk()->getIdequipamento(); ?>;
-                params.type='caracteristica';
+                params.type = 'caracteristica';
                 params.id = $(this).attr('id');
                 return params;
             }
@@ -42,12 +54,14 @@
         <?php include_once(__DIR__ . '/../menu.phtml'); ?>
 
     </div>
+
     <h3>
         <?php
         $nome = "Descrição Física para: IRM/";
         $primeiro = $this->peca[0];
         $nome .= "{$primeiro->getEquipamentoFk()->getModeloequipamento()->getTipoequipamento()->getSigla()}/";
         $nome .= "{$primeiro->getEquipamentoFk()->getNome()}";
+        $iequip = $primeiro->getEquipamentoFk()->getIdequipamento();
         echo $nome;
         ?>
 
@@ -81,7 +95,7 @@
                                     <?php echo $iterator->getCaracteristicasFk()->getCaracteristica(); ?>
                                 </td>
                                 <td >
-                                    <a href="#" id="<?php echo str_replace(' ', '_', $this->peca[0]->getIdequipamentoCaracteristica()); ?>" data-type="text" data-pk="1" data-url="<?php echo $this->url('ti/equipamentos/update');?>" data-original-title="Digite o(a) <?php echo $iterator->getCaracteristicasFk()->getCaracteristica();?>"> <?php echo $iterator->getDetalhe(); ?></a> 
+                                    <a href="#" id="<?php echo $iterator->getIdequipamentoCaracteristica(); ?>" data-type="text" data-pk="1" data-url="<?php echo $this->url('ti/equipamentos/update'); ?>" data-original-title="Digite o(a) <?php echo $iterator->getCaracteristicasFk()->getCaracteristica(); ?>"> <?php echo $iterator->getDetalhe(); ?></a> 
                                 </td>
                             </tr>
                         <?php endforeach; ?>

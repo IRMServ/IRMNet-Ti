@@ -148,7 +148,7 @@ class EquipamentosController extends AbstractActionController {
         $ie = new ImagemEquipamento($this->getEntityManager());
         $iequi = $ie->getByEquipamento($id);
         $equipcar = $ec->getByEquipamento($id);
-        
+       
         return new ViewModel(array('licencas' => $equi->getLicencas(), 'equip' => $equi, 'peca' => $equipcar,'iequi'=>$iequi));
     }
 
