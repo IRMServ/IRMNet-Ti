@@ -30,8 +30,6 @@
             },
             params: function(params)
             {
-                params.pk = <?php echo $this->peca[0]->getEquipamentoFk()->getIdequipamento(); ?>;
-                params.type = 'caracteristica';
                 params.id = $(this).attr('id');
                 return params;
             }
