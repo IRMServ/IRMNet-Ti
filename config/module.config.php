@@ -62,7 +62,9 @@ return array(
                 'TI\Controller\Equipamentos:descricaofisica',
                 'TI\Controller\Equipamentos:equipamento',
                 'TI\Controller\Equipamentos:upload',
+                'TI\Controller\Equipamentos:update',
                 'TI\Controller\Equipamentos:uploadjs',
+                'ZFTool\Controller\Diagnostics:run',
             ),
         )
     ),
@@ -326,6 +328,15 @@ return array(
                                     'defaults' => array(
                                         'action' => 'store',
                                         'id' => 0
+                                    ),
+                                ),
+                            ),
+                            'update' => array(
+                                'type' => 'literal',
+                                'options' => array(
+                                    'route' => '/update',
+                                    'defaults' => array(
+                                        'action' => 'update',
                                     ),
                                 ),
                             ),
@@ -695,5 +706,12 @@ return array(
                 return $farray;
             },
         )
+    ),
+    'asset_manager' => array(
+        'resolver_configs' => array(
+            'paths' => array(
+                __DIR__ . '/../public',
+            ),
+        ),
     ),
 );

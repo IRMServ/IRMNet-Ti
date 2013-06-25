@@ -12,7 +12,6 @@ use TI\Entity\Equipamento,
     TI\Entity\ImagemEquipamento;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Form\Annotation\AnnotationBuilder;
-use TI\Service\UploadHandler;
 use Zend\View\Model\JsonModel;
 use Zend\Validator\File\Size;
 use Zend\Validator\File\Extension;
@@ -40,11 +39,12 @@ class EquipamentosController extends AbstractActionController {
         $fab = new Equipamento($this->getEntityManager());
         $afb = new AnnotationBuilder();
         $form = $afb->createForm($fab);
-        $form->get('modeloequipamento')->setEmptyOption('Escolha um Modelo de Equipamento')->setValueOptions($this->getServiceLocator()->get('ModeloEquipPair'));
+        $test = $form->get('modeloequipamento')->setEmptyOption('Escolha um Modelo de Equipamento')->setValueOptions($this->getServiceLocator()->get('ModeloEquipPair'));
 
         $id = $this->params()->fromRoute('id');
         if ($id) {
             $form->bind($fab->getById($id));
+           
             $form->get('submit')->setValue('Enviar');
         }
         if ($this->getRequest()->isPost()) {
@@ -71,6 +71,7 @@ class EquipamentosController extends AbstractActionController {
         $carac = $this->getServiceLocator()->get('CaracteristicasPair');
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
+            
             foreach ($data['my-select'] as $d) {
                 $caract = new Caracteristicas($this->getEntityManager());
                 $c = $caract->getById($d);
@@ -78,7 +79,7 @@ class EquipamentosController extends AbstractActionController {
                 $fab->setCaracteristicasFk($c);
                 $fab->setEquipamentoFk($equi);
                 $fab->setDetalhe($data[str_replace(' ', '_', $c->getCaracteristica())]);
-                echo $data[str_replace(' ', '_', $c->getCaracteristica())] . '-' . $c->getCaracteristica() . '<br>';
+                
                 $fab->store();
             }
             $this->redirect()->toRoute('ti/equipamentos/storelicencas', array('id' => $id));
@@ -214,6 +215,23 @@ class EquipamentosController extends AbstractActionController {
         $ext = explode('.', $file_name);
         $ext = array_pop($ext);
         return strtolower($ext);
+    }
+    
+    public function updateAction()
+    {
+        $ec = new EquipamentoCaracteristica($this->getEntityManager());
+      
+        if($this->getRequest()->isPost())
+        {
+            
+            $data = $this->getRequest()->getPost();
+            $ecar = $ec->getById($data['id']);
+            $ecar->setEm($this->getEntityManager());
+            $ecar->setDetalhe($data['value']);
+            $ecar->store();
+            return new JsonModel(array('result'=>'ok'));
+        }
+        return new JsonModel(array());
     }
 
 }

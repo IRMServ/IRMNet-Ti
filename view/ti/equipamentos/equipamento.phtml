@@ -1,10 +1,29 @@
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-editable.css">
+<script type="text/javascript" src="/js/bootstrap-editable.min.js"></script>
 <script>
     $(document).ready(function() {
         $("table a").tooltip();
         $('#myTab a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
-        })
+        });
+        $("#caracteristica a").editable({
+            url: "<?php echo $this->url('ti/equipamentos/update');?>",
+            ajaxOptions: {
+                dataType: 'json' //assuming json response
+            },
+            success: function(data, config)
+            {
+                alert(data.result);
+            },
+            params: function(params)
+            {
+                params.pk = <?php echo $this->peca[0]->getEquipamentoFk()->getIdequipamento(); ?>;
+                params.type='caracteristica';
+                params.id = $(this).attr('id');
+                return params;
+            }
+        });
     });
 </script>
 
@@ -34,7 +53,7 @@
 
     </h3>
     <div class="span9">
-       
+
         <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#fisica">Descrição física</a></li>
             <li><a href="#logica">Descrição lógica</a></li>
@@ -45,7 +64,7 @@
         <div class="tab-content">
             <div class="tab-pane active" id="fisica">
 
-                <table class="table table-striped table-bordered table-hover">
+                <table id="caracteristica" class="table table-striped table-bordered table-hover">
                     <thead>         
                         <tr>
 
@@ -55,18 +74,17 @@
                     </thead>
                     <tbody>   
                         <?php
-                        if($this->peca):
                         foreach ($this->peca as $iterator):
                             ?>
                             <tr>
                                 <td>
                                     <?php echo $iterator->getCaracteristicasFk()->getCaracteristica(); ?>
                                 </td>
-                                <td>
-                                    <?php echo $iterator->getDetalhe(); ?>
+                                <td >
+                                    <a href="#" id="<?php echo str_replace(' ', '_', $this->peca[0]->getIdequipamentoCaracteristica()); ?>" data-type="text" data-pk="1" data-url="<?php echo $this->url('ti/equipamentos/update');?>" data-original-title="Digite o(a) <?php echo $iterator->getCaracteristicasFk()->getCaracteristica();?>"> <?php echo $iterator->getDetalhe(); ?></a> 
                                 </td>
                             </tr>
-                        <?php  endforeach; endif; ?>
+                        <?php endforeach; ?>
 
                     </tbody>
                     <tfoot>
@@ -93,7 +111,6 @@
                     </thead>
                     <tbody>   
                         <?php
-                        if($this->licencas):
                         foreach ($this->licencas->getIterator() as $iterator):
                             ?>
                             <tr>
@@ -104,7 +121,7 @@
                                     <?php echo $iterator->getLicenca(); ?>
                                 </td>
                             </tr>
-                        <?php endforeach;endif; ?>
+                        <?php endforeach; ?>
 
                     </tbody>
                     <tfoot>
@@ -118,12 +135,13 @@
                 </table>
             </div>
             <div class="tab-pane" id="imagem">
-                        <?php
-                        if($this->iequi):
-                        foreach ($this->iequi as $iterator):
-                            ?>
-                            <a href="<?php echo $iterator->getArquivo();?>" target="_blank"><img width="140" height="140" src="<?php echo $iterator->getArquivo();?>" class="img-rounded" /></a>
-                        <?php endforeach;endif; ?>
+
+                <?php
+                foreach ($this->iequi as $iterator):
+                    ?>
+                    <a href="<?php echo $iterator->getArquivo(); ?>" target="_blank"><img width="140" height="140" src="<?php echo $iterator->getArquivo(); ?>" class="img-rounded" /></a>
+                    <?php endforeach; ?>
+
             </div>
         </div>
     </div>
