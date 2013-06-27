@@ -21,16 +21,23 @@
                     {
                         var text = $("option[value='" + values + "']").text();
                         elems.push(text);
-                        $('#descri').append("<label id='"+text+"'>" + text + ": <input  type='text' name='" + text + "'></label>");
+                        $('#descri').append("<label id='" + text + "'>" + text + ": <input  type='text' name='" + text + "'></label>");
                     },
                     afterDeselect: function(values)
                     {
                         var text = $("option[value='" + values + "']").text();
                         //alert(text);
-                       $("#"+text).remove();
+                        $("#" + text).remove();
                     }
                 }
         );
+        $("#enviar").click(function() {
+            var con = confirm('Confirma este envio?');
+            if (con)
+            {
+                $("#form").submit();
+            }
+        })
     });
 </script>
 <div class="row-fluid">
@@ -41,7 +48,7 @@
 
     </div>
     <div class="span9">
-        <form method="post">
+        <form id="form" method="post">
             <select multiple="multiple" id="my-select" name="my-select[]">
                 <?php foreach ($this->carac as $key => $value): ?>
                     <option value='<?php echo $key; ?>'><?php echo $value ?></option>
@@ -51,7 +58,7 @@
             <div id='descri'>
 
             </div>
-            <input type='submit' value='Enviar' class='btn btn-success'>
+            <input type='button' id="enviar" value='Enviar' class='btn btn-success'>
         </form>
     </div>
 </div>
