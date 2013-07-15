@@ -302,7 +302,7 @@ class HelpDeskController extends AbstractActionController {
                 $mail = new Mail($this->getServiceLocator());
                 $mail->addFrom('webmaster@irmserv.com.br')
                         ->addTo($store['email'])
-                        //->addCc($setor->getEmail())
+                        ->addCc($setor->getEmail())
                         //->addTo($setor->getEmail())
                         ->setSubject("[resposta chamado] {$chamado->getTitulo()}")
                         ->setBody($message);
@@ -377,7 +377,7 @@ class HelpDeskController extends AbstractActionController {
             $mail = new Mail($this->getServiceLocator());
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($store['email'])
-                    //->addCc($setor->getEmail())
+                    ->addCc($setor->getEmail())
                     //->addTo($setor->getEmail())
                     ->setSubject("[fechamento chamado] {$chamado->getTitulo()}")
                     ->setBody($message);
