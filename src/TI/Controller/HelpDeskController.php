@@ -379,7 +379,7 @@ class HelpDeskController extends AbstractActionController {
                     ->addTo($store['email'])
                     //->addCc($setor->getEmail())
                     //->addTo($setor->getEmail())
-                    ->setSubject("[resposta chamado] {$chamado->getTitulo()}")
+                    ->setSubject("[fechamento chamado] {$chamado->getTitulo()}")
                     ->setBody($message);
 
 
