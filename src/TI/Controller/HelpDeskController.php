@@ -291,7 +291,7 @@ class HelpDeskController extends AbstractActionController {
                 $this->getEntityManager()->persist($resposta);
                 $this->getEntityManager()->flush();
                 $renderer = $this->getServiceLocator()->get('ViewRenderer');
-                $content = $renderer->render('ti/help-desk/email-resposta-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
+                $content = $renderer->render('ti/help-desk/email-resposta-chamado.phtml',  array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
 
                 $mimehtml = new MimeType($content);
 
