@@ -16,10 +16,8 @@ use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Debug\Debug;
 use \DateTime;
-use Zend\Mime\Part as MimeType;
-use Zend\Mime\Mime;
-use Zend\Mime\Message;
-use MailService\Service\MailService as Mail;
+use MailService\Service\ServiceTemplate;
+use MailService\Service\MailService;
 
 class HelpDeskController extends AbstractActionController {
 
@@ -184,23 +182,13 @@ class HelpDeskController extends AbstractActionController {
                 $this->getEntityManager()->persist($chamado);
                 $this->getEntityManager()->flush();
 
-                $renderer = $this->getServiceLocator()->get('ViewRenderer');
-
-                $content = $renderer->render('ti/help-desk/email-abertura-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $author['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $chamado->getDescricao()));
-                $mimehtml = new MimeType($content);
-                $mimehtml->type = Mime::TYPE_HTML;
-
-                $mimehtml->charset = 'UTF-8';
-                $message = new Message();
-
-                $message->addPart($mimehtml);
-
-                $mail = new Mail($this->getServiceLocator());
+               
+                $mail = new MailService($this->getServiceLocator(),ServiceTemplate::HELPDESK_ABERTURA);
                 $mail->addFrom('webmaster@irmserv.com.br')
                         ->addCc($author['email'])
                         ->addTo($setor->getEmail())
                         ->setSubject("[chamado aberto] {$chamado->getTitulo()}")
-                        ->setBody($message);
+                        ->setBody(array('setor' => $setor->getIdsetor(), 'sujeito' => $author['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $chamado->getDescricao()));
 
                 $mail->send();
                 $this->flashMessenger()->addMessage('As informações foram registradas.');
@@ -290,28 +278,17 @@ class HelpDeskController extends AbstractActionController {
                 $resposta->populate($data);
                 $this->getEntityManager()->persist($resposta);
                 $this->getEntityManager()->flush();
-                $renderer = $this->getServiceLocator()->get('ViewRenderer');
-                $content = $renderer->render('ti/help-desk/email-resposta-chamado.phtml',  array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
+               
 
-                $mimehtml = new MimeType($content);
-
-                $message = new Message();
-
-                $message->addPart($mimehtml);
-
-                $mail = new Mail($this->getServiceLocator());
+                $mail = new MailService($this->getServiceLocator(),ServiceTemplate::HELPDESK_RESPOSTA);
                 $mail->addFrom('webmaster@irmserv.com.br')
                         ->addTo($store['email'])
                         ->addCc($setor->getEmail())
-                        //->addTo($setor->getEmail())
+                        ->addTo($setor->getEmail())
                         ->setSubject("[resposta chamado] {$chamado->getTitulo()}")
-                        ->setBody($message);
+                        ->setBody(array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
 
 
-                $headers = $mail->getHeaders();
-                $headers->removeHeader('Content-Type');
-                $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
-                $mail->setHeaders($headers);
                 $mail->send();
                 $this->redirect()->toRoute('ti/helpdesk/chamado', array('chamado' => $id, 'setor' => $setor->getIdsetor()));
             }
@@ -365,28 +342,18 @@ class HelpDeskController extends AbstractActionController {
             $chamado->setNota(0);
             $this->getEntityManager()->merge($chamado);
             $this->getEntityManager()->flush();
-            $renderer = $this->getServiceLocator()->get('ViewRenderer');
-            $content = $renderer->render('ti/help-desk/email-fechar-chamado.phtml', array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo()));
+           
 
-            $mimehtml = new MimeType($content);
-
-            $message = new Message();
-
-            $message->addPart($mimehtml);
-
-            $mail = new Mail($this->getServiceLocator());
+            $mail = new MailsERVICE($this->getServiceLocator(),ServiceTemplate::HELPDESK_FECHAMENTO);
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($store['email'])
                     ->addCc($setor->getEmail())
-                    //->addTo($setor->getEmail())
+                    ->addTo($setor->getEmail())
                     ->setSubject("[fechamento chamado] {$chamado->getTitulo()}")
-                    ->setBody($message);
+                    ->setBody(array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo()));
 
 
-            $headers = $mail->getHeaders();
-            $headers->removeHeader('Content-Type');
-            $headers->addHeaderLine('Content-Type', 'text/html; charset=UTF-8');
-            $mail->setHeaders($headers);
+         
             $mail->send();
 
             return $this->redirect()->toRoute('ti/helpdesk', array('setor' => $post['setor']));
@@ -427,11 +394,11 @@ class HelpDeskController extends AbstractActionController {
         $message = new Message();
         $message->addPart($mimehtml);
 
-        $mail = new Mail($this->getServiceLocator());
+        $mail = new MailsERVICE($this->getServiceLocator(),ServiceTemplate::ENVIO_TESTE);
         $mail->addFrom('webmaster@irmserv.com.br')
                 ->addTo('igor.carvalho@irmserv.com.br')
                 ->setSubject('teste mail service')
-                ->setBody($message);
+                ->setBody(array('msg'=>'teste do envi joão'));
 
         $mail->send();
     }
