@@ -193,9 +193,7 @@ class HelpDeskController extends AbstractActionController {
                 $mail->send();
                 $this->flashMessenger()->addMessage('As informações foram registradas.');
                 return $this->redirect()->toRoute('ti/helpdesk', array('setor' => $setor->getIdsetor()));
-            } else {
-                Debug::dump($form->getMessages());
-            }
+            } 
         }
 
 
@@ -284,7 +282,7 @@ class HelpDeskController extends AbstractActionController {
                 $mail->addFrom('webmaster@irmserv.com.br')
                         ->addTo($store['email'])
                         ->addCc($setor->getEmail())
-                        ->addTo($setor->getEmail())
+                       
                         ->setSubject("[resposta chamado] {$chamado->getTitulo()}")
                         ->setBody(array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo(), 'conteudo' => $resposta->getResposta()));
 
@@ -348,7 +346,7 @@ class HelpDeskController extends AbstractActionController {
             $mail->addFrom('webmaster@irmserv.com.br')
                     ->addTo($store['email'])
                     ->addCc($setor->getEmail())
-                    ->addTo($setor->getEmail())
+                  
                     ->setSubject("[fechamento chamado] {$chamado->getTitulo()}")
                     ->setBody(array('setor' => $setor->getIdsetor(), 'sujeito' => $store['displayname'], 'chamado' => $chamado->getIdchamado(), 'titulo' => $chamado->getTitulo()));
 
