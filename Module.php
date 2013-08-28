@@ -57,7 +57,17 @@ class Module implements ServiceProviderInterface,ConsoleUsageProviderInterface
             ),
         );
     }
-    
+    public function getServiceConfig()
+    {   
+       return array(
+            'factories' => array(
+                'doctrine.entitymanager.orm_alternative'        => new EntityManagerFactory('orm_alternative'),
+                'doctrine.connection.orm_alternative'           => new DBALConnectionFactory('orm_alternative'),
+                'doctrine.configuration.orm_alternative'        => new ORMConfigurationFactory('orm_alternative'),
+                ),
+           );
+
+    }
     public function getConsoleUsage(Console $console){
         return array(
             // Describe available commands
