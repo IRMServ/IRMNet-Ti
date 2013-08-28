@@ -290,5 +290,89 @@ class ImpressaoController extends AbstractActionController {
 
         return new ViewModel(array('dados' => $documentos, 'user' => $usuario, 'periodo' => $data, 'users' => $user));
     }
+    public function importarAction() {
+        
+      $tempoini = microtime(true);
+        
+        $request = $this->getRequest();
+        if (!$request instanceof ConsoleRequest) {
+            throw new \RuntimeException('You can only use this action from a console!');
+        }
+
+        // Get user email from console and check if the user used --verbose or -v flag
+
+        $caminho = $request->getParam('caminho', false);
+        if (!$caminho) {
+            throw new \InvalidArgumentException('Caminho do arquivo não informado!');
+        }
+        $namefile = "papercut-print-log-%s.csv";
+        $data = new \DateTime('now');
+        $dia = $data->format('Y-m-d');
+        $file = sprintf($caminho . '/' . $namefile, $dia);
+        $dados = file($file);
+        $verbose = $request->getParam('verbose', false) || $request->getParam('v', false);
+        $retorno = '';
+
+
+        if ($verbose) {
+            echo "-----------------------------------------------------\n";
+            echo "Imprimindo dados do arquivo {$file}\n";
+            echo "-----------------------------------------------------\n";
+            echo 'hora, user, pag, copias, impressora, nome documento, tamanho papel, lingaugem, altura, largura, duplex, escala cinza, tamanho'."\n";
+            echo "-----------------------------------------------------\n";
+            for ($i = 2; $i < count($dados); $i++) {
+                list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client,$tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
+                echo "$tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho\n";
+                echo "------------------------------------------------------------------------\n";
+              
+                $paper = new Papercut($this->getEntityManager());
+                $paper->setTime(new \DateTime($tempo))
+                          ->setUser($user)
+                          ->setPages($pag)
+                          ->setCopies($copias)
+                          ->setPrinter($impressora)
+                          ->setDocumentName($nome_documento)
+                          ->setClient($client)
+                          ->setPaperSize($tamanho_papel)
+                          ->setLanguage($lingaugem)
+                          ->setHeight($altura)
+                          ->setWidth($largura)
+                          ->setDuplex($duplex)
+                          ->setGrayscale($escala_cinza)
+                          ->setSize($tamanho)
+                          ->store();
+                echo "Importado linha {$i} do arquivo\n";
+                echo "------------------------------------------------------------------------\n";
+            }
+            $tempofin = microtime(true);
+            $tempo = $tempofin - $tempoini;
+            echo "Tempo total: {$tempo} seg.\n";
+        } else {
+            for ($i = 2; $i < count($dados); $i++) {
+                list($tempo, $user, $pag, $copias, $impressora, $nome_documento,$client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
+                  $paper = new Papercut($this->getEntityManager());
+                  $paper->setTime(new \DateTime($tempo))
+                          ->setUser($user)
+                          ->setPages($pag)
+                          ->setCopies($copias)
+                          ->setPrinter($impressora)
+                          ->setDocumentName($nome_documento)
+                          ->setClient($client)
+                          ->setPaperSize($tamanho_papel)
+                          ->setLanguage($lingaugem)
+                          ->setHeight($altura)
+                          ->setWidth($largura)
+                          ->setDuplex($duplex)
+                          ->setGrayscale($escala_cinza)
+                          ->setSize($tamanho)
+                          ->store();
+                          
+            }
+            echo "\nImportação terminada!\n";
+            $tempofin = microtime(true);
+            $tempo = $tempofin - $tempoini;
+            echo "Tempo total gasto: {$tempo} seg.\n";
+        }
+    }
 
 }

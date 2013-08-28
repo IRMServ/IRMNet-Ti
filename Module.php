@@ -3,8 +3,10 @@ namespace TI;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-
-class Module
+use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Zend\Console\Adapter\AdapterInterface as Console;
+class Module implements ServiceProviderInterface,ConsoleUsageProviderInterface
 {
      public function onBootstrap(MvcEvent $e) {
         $application = $e->getApplication();
@@ -50,6 +52,20 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
+        );
+    }
+    
+    public function getConsoleUsage(Console $console){
+        return array(
+            // Describe available commands
+            'impressao (--importar|-i) --caminho= [--verbose|-v]'    => 'Importa dados de impressão a partir de um arquivo',
+
+            // Describe expected parameters
+            
+            
+            array( '--importar|-i',     'Importar dados da impressão'        ),
+            array( '--caminho',     'Caminho arquivo de dados da impressão'        ),
+            array( '--verbose|-v',     '(optional) turn on verbose mode'        ),
         );
     }
     

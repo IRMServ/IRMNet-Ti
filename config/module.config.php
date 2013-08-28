@@ -714,4 +714,19 @@ return array(
             ),
         ),
     ),
+                    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'importar-impressao' => array(
+                    'options' => array(
+                        'route' => 'impressao (--importar|-i) --caminho= [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'TI\Controller\Impressao',
+                            'action' => 'importar'
+                        )
+                    )
+                )
+            )
+        )
+    )
 );
