@@ -1,8 +1,11 @@
 <?php
-namespace TI;
-use Zend\Mvc\MvcEvent;
+namespace TI;use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use DoctrineORMModule\Service\EntityManagerFactory;
+use DoctrineORMModule\Service\DBALConnectionFactory;
+use DoctrineORMModule\Service\ConfigurationFactory as ORMConfigurationFactory;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleBannerProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 use Zend\Console\Adapter\AdapterInterface as Console;
