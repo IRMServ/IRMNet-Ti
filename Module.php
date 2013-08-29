@@ -69,15 +69,17 @@ class Module implements ServiceProviderInterface,ConsoleUsageProviderInterface
 
     }
     public function getConsoleUsage(Console $console){
-        return array(
+        
+           return array(
             // Describe available commands
-            'impressao (--importar|-i) --caminho= [--verbose|-v]'    => 'Importa dados de impressão a partir de um arquivo',
+            'impressao (--importar|-i) [--all|-a] --caminho= [--verbose|-v]'    => 'Importa dados de impressao a partir de um arquivo ou diretorio',
 
             // Describe expected parameters
             
             
-            array( '--importar|-i',     'Importar dados da impressão'        ),
-            array( '--caminho',     'Caminho arquivo de dados da impressão'        ),
+            array( '--importar|-i',     'Importar dados da impressao'        ),
+            array( '--all|-a',     '(optional) Todos os arquivos do caminho especificado'        ),
+            array( '--caminho',     'Caminho arquivo de dados da impressao'        ),
             array( '--verbose|-v',     '(optional) turn on verbose mode'        ),
         );
     }

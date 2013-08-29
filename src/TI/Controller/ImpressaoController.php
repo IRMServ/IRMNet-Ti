@@ -6,6 +6,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Config\Config;
 use Zend\Debug\Debug;
+use Zend\Console\Request as ConsoleRequest;
+use TI\Entity\Papercut;
 
 class ImpressaoController extends AbstractActionController {
 
@@ -87,8 +89,10 @@ class ImpressaoController extends AbstractActionController {
             $arq = file($file);
 
             for ($i = 2; $i <= count($arq); $i++) {
-                @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $arq[$i]);
+                @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(';', $arq[$i]);
                 $total += $Pages * $Copies;
+
+                //echo "{$Pages}/{$Copies}<br>";
             }
 
             $extract = explode('\\', $file);
@@ -257,20 +261,21 @@ class ImpressaoController extends AbstractActionController {
 
         $documentos = array();
         $users = array();
+
         for ($i = 2; $i <= count($file); $i++) {
             @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $file[$i]);
             $datac = explode(' ', $Time);
 
             if ((urldecode($usuario) == $Printer) && (implode('-', array_reverse(explode('-', $datac[0]))) == $data )) {
-
+                $users[] = $User;
                 if (!array_key_exists($DocumentName, $documentos)) {
                     $documentos[$DocumentName] = $Pages * $Copies;
-                    $users[] = $User;
                 } else {
                     $documentos[$DocumentName] += $Pages * $Copies;
                 }
             }
         }
+
 
         $ldapconfig = $this->getServiceLocator()->get('Config');
         $ldap = $this->getServiceLocator()->get('Ldap');
@@ -284,16 +289,13 @@ class ImpressaoController extends AbstractActionController {
                 }
             }
         }
-
-
-
-
         return new ViewModel(array('dados' => $documentos, 'user' => $usuario, 'periodo' => $data, 'users' => $user));
     }
+
     public function importarAction() {
-        
-      $tempoini = microtime(true);
-        
+
+        $tempoini = microtime(true);
+
         $request = $this->getRequest();
         if (!$request instanceof ConsoleRequest) {
             throw new \RuntimeException('You can only use this action from a console!');
@@ -311,64 +313,135 @@ class ImpressaoController extends AbstractActionController {
         $file = sprintf($caminho . '/' . $namefile, $dia);
         $dados = file($file);
         $verbose = $request->getParam('verbose', false) || $request->getParam('v', false);
-        $retorno = '';
+        $all = $request->getParam('all', false) || $request->getParam('a', false);
+
 
 
         if ($verbose) {
-            echo "-----------------------------------------------------\n";
-            echo "Imprimindo dados do arquivo {$file}\n";
-            echo "-----------------------------------------------------\n";
-            echo 'hora, user, pag, copias, impressora, nome documento, tamanho papel, lingaugem, altura, largura, duplex, escala cinza, tamanho'."\n";
-            echo "-----------------------------------------------------\n";
-            for ($i = 2; $i < count($dados); $i++) {
-                list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client,$tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
-                echo "$tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho\n";
-                echo "------------------------------------------------------------------------\n";
-              
-                $paper = new Papercut($this->getEntityManager());
-                $paper->setTime(new \DateTime($tempo))
-                          ->setUser($user)
-                          ->setPages($pag)
-                          ->setCopies($copias)
-                          ->setPrinter($impressora)
-                          ->setDocumentName($nome_documento)
-                          ->setClient($client)
-                          ->setPaperSize($tamanho_papel)
-                          ->setLanguage($lingaugem)
-                          ->setHeight($altura)
-                          ->setWidth($largura)
-                          ->setDuplex($duplex)
-                          ->setGrayscale($escala_cinza)
-                          ->setSize($tamanho)
-                          ->store();
-                echo "Importado linha {$i} do arquivo\n";
-                echo "------------------------------------------------------------------------\n";
+            if ($all) {
+
+                foreach (glob($caminho . '/*.csv') as $files) {
+                    echo "-----------------------------------------------------\n";
+                    echo "Imprimindo dados do arquivo {$files}\n";
+                    echo "-----------------------------------------------------\n";
+                    echo 'hora, user, pag, copias, impressora, nome documento, tamanho papel, lingaugem, altura, largura, duplex, escala cinza, tamanho' . "\n";
+                    echo "-----------------------------------------------------\n";
+                    for ($i = 2; $i < count($dados); $i++) {
+                        list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
+                        echo "$tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho\n";
+                        echo "------------------------------------------------------------------------\n";
+
+                        $paper = new Papercut($this->getEntityManager());
+                        $paper->setTime(new \DateTime($tempo))
+                                ->setUser($user)
+                                ->setPages($pag)
+                                ->setCopies($copias)
+                                ->setPrinter($impressora)
+                                ->setDocumentName($nome_documento)
+                                ->setClient($client)
+                                ->setPaperSize($tamanho_papel)
+                                ->setLanguage($lingaugem)
+                                ->setHeight($altura)
+                                ->setWidth($largura)
+                                ->setDuplex($duplex)
+                                ->setGrayscale($escala_cinza)
+                                ->setSize($tamanho)
+                                ->store();
+                        echo "Importado linha {$i} do arquivo\n";
+                        echo "------------------------------------------------------------------------\n";
+                    }
+                }
+            } else {
+                echo "-----------------------------------------------------\n";
+                echo "Imprimindo dados do arquivo {$file}\n";
+                echo "-----------------------------------------------------\n";
+                echo 'hora, user, pag, copias, impressora, nome documento, tamanho papel, lingaugem, altura, largura, duplex, escala cinza, tamanho' . "\n";
+                echo "-----------------------------------------------------\n";
+                for ($i = 2; $i < count($dados); $i++) {
+                    list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
+                    echo "$tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho\n";
+                    echo "------------------------------------------------------------------------\n";
+
+                    $paper = new Papercut($this->getEntityManager());
+                    $paper->setTime(new \DateTime($tempo))
+                            ->setUser($user)
+                            ->setPages($pag)
+                            ->setCopies($copias)
+                            ->setPrinter($impressora)
+                            ->setDocumentName($nome_documento)
+                            ->setClient($client)
+                            ->setPaperSize($tamanho_papel)
+                            ->setLanguage($lingaugem)
+                            ->setHeight($altura)
+                            ->setWidth($largura)
+                            ->setDuplex($duplex)
+                            ->setGrayscale($escala_cinza)
+                            ->setSize($tamanho)
+                            ->store();
+                    echo "Importado linha {$i} do arquivo\n";
+                    echo "------------------------------------------------------------------------\n";
+                }
             }
             $tempofin = microtime(true);
             $tempo = $tempofin - $tempoini;
-            echo "Tempo total: {$tempo} seg.\n";
+            echo "Tempo total gasto: {$tempo} seg.\n";
         } else {
-            for ($i = 2; $i < count($dados); $i++) {
-                list($tempo, $user, $pag, $copias, $impressora, $nome_documento,$client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
-                  $paper = new Papercut($this->getEntityManager());
-                  $paper->setTime(new \DateTime($tempo))
-                          ->setUser($user)
-                          ->setPages($pag)
-                          ->setCopies($copias)
-                          ->setPrinter($impressora)
-                          ->setDocumentName($nome_documento)
-                          ->setClient($client)
-                          ->setPaperSize($tamanho_papel)
-                          ->setLanguage($lingaugem)
-                          ->setHeight($altura)
-                          ->setWidth($largura)
-                          ->setDuplex($duplex)
-                          ->setGrayscale($escala_cinza)
-                          ->setSize($tamanho)
-                          ->store();
-                          
+            if ($all) {
+
+                foreach (glob($caminho . '/*.csv') as $files) {
+
+                    for ($i = 2; $i < count($dados); $i++) {
+                        list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
+
+
+                        $paper = new Papercut($this->getEntityManager());
+                        $paper->setTime(new \DateTime($tempo))
+                                ->setUser($user)
+                                ->setPages($pag)
+                                ->setCopies($copias)
+                                ->setPrinter($impressora)
+                                ->setDocumentName($nome_documento)
+                                ->setClient($client)
+                                ->setPaperSize($tamanho_papel)
+                                ->setLanguage($lingaugem)
+                                ->setHeight($altura)
+                                ->setWidth($largura)
+                                ->setDuplex($duplex)
+                                ->setGrayscale($escala_cinza)
+                                ->setSize($tamanho)
+                                ->store();
+                    }
+                    echo "------------------------------------------------------------------------\n";
+                    echo "Importacao concluida\n";
+                    echo "------------------------------------------------------------------------\n";
+                }
+            } else {
+
+                for ($i = 2; $i < count($dados); $i++) {
+                    list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
+
+
+                    $paper = new Papercut($this->getEntityManager());
+                    $paper->setTime(new \DateTime($tempo))
+                            ->setUser($user)
+                            ->setPages($pag)
+                            ->setCopies($copias)
+                            ->setPrinter($impressora)
+                            ->setDocumentName($nome_documento)
+                            ->setClient($client)
+                            ->setPaperSize($tamanho_papel)
+                            ->setLanguage($lingaugem)
+                            ->setHeight($altura)
+                            ->setWidth($largura)
+                            ->setDuplex($duplex)
+                            ->setGrayscale($escala_cinza)
+                            ->setSize($tamanho)
+                            ->store();
+                }
+                echo "------------------------------------------------------------------------\n";
+                echo "Importacao concluida\n";
+                echo "------------------------------------------------------------------------\n";
             }
-            echo "\nImportação terminada!\n";
             $tempofin = microtime(true);
             $tempo = $tempofin - $tempoini;
             echo "Tempo total gasto: {$tempo} seg.\n";

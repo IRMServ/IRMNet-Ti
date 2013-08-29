@@ -719,7 +719,7 @@ return array(
             'routes' => array(
                 'importar-impressao' => array(
                     'options' => array(
-                        'route' => 'impressao (--importar|-i) --caminho= [--verbose|-v]',
+                        'route' => 'impressao (--importar|-i) [--all|-a] --caminho= [--verbose|-v]',
                         'defaults' => array(
                             'controller' => 'TI\Controller\Impressao',
                             'action' => 'importar'
