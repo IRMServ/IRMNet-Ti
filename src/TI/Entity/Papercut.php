@@ -152,7 +152,7 @@ class Papercut
         return $this->time;
     }
 
-    public function setTime(\DateTime $time) {
+    public function setTime($time) {
         $this->time = $time;
         return $this;
     }
