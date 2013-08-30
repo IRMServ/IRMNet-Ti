@@ -31,7 +31,7 @@ class Papercut
     /**
      * @var string
      *
-     * @ORM\Column(name="user", type="string", length=45, nullable=true)
+     * @ORM\Column(name="usuario", type="string", length=45, nullable=true)
      */
     private $user;
 
