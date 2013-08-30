@@ -89,7 +89,7 @@ class ImpressaoController extends AbstractActionController {
             $arq = file($file);
 
             for ($i = 2; $i <= count($arq); $i++) {
-                @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(';', $arq[$i]);
+                @list($Time, $User, $Pages, $Copies, $Printer, $DocumentName, $Client, $PaperSize, $Language, $Height, $Width, $Duplex, $Grayscale, $Size) = explode(',', $arq[$i]);
                 $total += $Pages * $Copies;
 
                 //echo "{$Pages}/{$Copies}<br>";
@@ -316,8 +316,8 @@ class ImpressaoController extends AbstractActionController {
         $all = $request->getParam('all', false) || $request->getParam('a', false);
 
 
-
         if ($verbose) {
+
             if ($all) {
 
                 foreach (glob($caminho . '/*.csv') as $files) {
@@ -326,29 +326,36 @@ class ImpressaoController extends AbstractActionController {
                     echo "-----------------------------------------------------\n";
                     echo 'hora, user, pag, copias, impressora, nome documento, tamanho papel, lingaugem, altura, largura, duplex, escala cinza, tamanho' . "\n";
                     echo "-----------------------------------------------------\n";
-                    for ($i = 2; $i < count($dados); $i++) {
-                        list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
-                        echo "$tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho\n";
-                        echo "------------------------------------------------------------------------\n";
+                    $dado = file($files);
 
-                        $paper = new Papercut($this->getEntityManager());
-                        $paper->setTime(new \DateTime($tempo))
-                                ->setUser($user)
-                                ->setPages($pag)
-                                ->setCopies($copias)
-                                ->setPrinter($impressora)
-                                ->setDocumentName($nome_documento)
-                                ->setClient($client)
-                                ->setPaperSize($tamanho_papel)
-                                ->setLanguage($lingaugem)
-                                ->setHeight($altura)
-                                ->setWidth($largura)
-                                ->setDuplex($duplex)
-                                ->setGrayscale($escala_cinza)
-                                ->setSize($tamanho)
-                                ->store();
-                        echo "Importado linha {$i} do arquivo\n";
-                        echo "------------------------------------------------------------------------\n";
+
+                    for ($i = 2; $i < count($dado) - 2; $i++) {
+                        list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dado[$i]);
+                        if (isset($user)) {
+
+                            echo "$tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho\n";
+                            echo "------------------------------------------------------------------------\n";
+
+                            $paper = new Papercut($this->getEntityManager());
+                            $paper->setTime($tempo)
+                                    ->setUser($user)
+                                    ->setPages($pag)
+                                    ->setCopies($copias)
+                                    ->setPrinter($impressora)
+                                    ->setDocumentName($nome_documento)
+                                    ->setClient($client)
+                                    ->setPaperSize($tamanho_papel)
+                                    ->setLanguage($lingaugem)
+                                    ->setHeight($altura)
+                                    ->setWidth($largura)
+                                    ->setDuplex($duplex)
+                                    ->setGrayscale($escala_cinza)
+                                    ->setSize($tamanho)
+                                    ->store();
+                            echo "Importado linha {$i} do arquivo\n";
+                            echo "------------------------------------------------------------------------\n";
+                            unset($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho);
+                        }
                     }
                 }
             } else {
@@ -357,13 +364,13 @@ class ImpressaoController extends AbstractActionController {
                 echo "-----------------------------------------------------\n";
                 echo 'hora, user, pag, copias, impressora, nome documento, tamanho papel, lingaugem, altura, largura, duplex, escala cinza, tamanho' . "\n";
                 echo "-----------------------------------------------------\n";
-                for ($i = 2; $i < count($dados); $i++) {
+                for ($i = 2; $i < count($dados) - 2; $i++) {
                     list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
                     echo "$tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho\n";
                     echo "------------------------------------------------------------------------\n";
 
                     $paper = new Papercut($this->getEntityManager());
-                    $paper->setTime(new \DateTime($tempo))
+                    $paper->setTime($tempo)
                             ->setUser($user)
                             ->setPages($pag)
                             ->setCopies($copias)
@@ -390,27 +397,34 @@ class ImpressaoController extends AbstractActionController {
 
                 foreach (glob($caminho . '/*.csv') as $files) {
 
-                    for ($i = 2; $i < count($dados); $i++) {
-                        list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dados[$i]);
+                    $dado = file($files);
 
 
-                        $paper = new Papercut($this->getEntityManager());
-                        $paper->setTime(new \DateTime($tempo))
-                                ->setUser($user)
-                                ->setPages($pag)
-                                ->setCopies($copias)
-                                ->setPrinter($impressora)
-                                ->setDocumentName($nome_documento)
-                                ->setClient($client)
-                                ->setPaperSize($tamanho_papel)
-                                ->setLanguage($lingaugem)
-                                ->setHeight($altura)
-                                ->setWidth($largura)
-                                ->setDuplex($duplex)
-                                ->setGrayscale($escala_cinza)
-                                ->setSize($tamanho)
-                                ->store();
+                    for ($i = 2; $i < count($dado) - 2; $i++) {
+                        list($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho) = explode(',', $dado[$i]);
+                        if (isset($user)) {
+
+                            $paper = new Papercut($this->getEntityManager());
+                            $paper->setTime($tempo)
+                                    ->setUser($user)
+                                    ->setPages($pag)
+                                    ->setCopies($copias)
+                                    ->setPrinter($impressora)
+                                    ->setDocumentName($nome_documento)
+                                    ->setClient($client)
+                                    ->setPaperSize($tamanho_papel)
+                                    ->setLanguage($lingaugem)
+                                    ->setHeight($altura)
+                                    ->setWidth($largura)
+                                    ->setDuplex($duplex)
+                                    ->setGrayscale($escala_cinza)
+                                    ->setSize($tamanho)
+                                    ->store();
+
+                            unset($tempo, $user, $pag, $copias, $impressora, $nome_documento, $client, $tamanho_papel, $lingaugem, $altura, $largura, $duplex, $escala_cinza, $tamanho);
+                        }
                     }
+
                     echo "------------------------------------------------------------------------\n";
                     echo "Importacao concluida\n";
                     echo "------------------------------------------------------------------------\n";
@@ -422,7 +436,7 @@ class ImpressaoController extends AbstractActionController {
 
 
                     $paper = new Papercut($this->getEntityManager());
-                    $paper->setTime(new \DateTime($tempo))
+                    $paper->setTime($tempo)
                             ->setUser($user)
                             ->setPages($pag)
                             ->setCopies($copias)

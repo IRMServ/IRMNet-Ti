@@ -24,7 +24,7 @@ class Papercut
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="Time", type="datetime", nullable=false)       
+     * @ORM\Column(name="Time", type="string",length=45, nullable=false)       
      */
     private $time;
 
