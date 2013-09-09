@@ -13,7 +13,7 @@
             $(this).tab('show');
         });
         $("#caracteristica a").editable({
-            url: "<?php echo $this->url('ti/equipamentos/update'); ?>",
+            url: "<?php echo $this->url('ti/equipamentos/update-restful'); ?>",
             ajaxOptions: {
                 dataType: 'json' //assuming json response
             },
@@ -119,6 +119,7 @@
 
                             <th>Software</th>
                             <th>Licença</th>      
+                            <th>Opções</th>      
                         </tr>
                     </thead>
                     <tbody>   
@@ -131,6 +132,9 @@
                                 </td>
                                 <td>
                                     <?php echo $iterator->getLicenca(); ?>
+                                </td>
+                                <td>
+                                    <?php echo $this->url(); ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

@@ -14,8 +14,10 @@ return array(
             'TI\Controller\Caracteristicas' => 'TI\Controller\CaracteristicasController',
             'TI\Controller\TipoEquipamento' => 'TI\Controller\TipoEquipamentoController',
             'TI\Controller\ModeloEquipamento' => 'TI\Controller\ModeloEquipamentoController',
+            'TI\Controller\ModeloImpressora' => 'TI\Controller\ModeloImpressoraController',
             'TI\Controller\AlocacaoEquipamento' => 'TI\Controller\AlocacaoEquipamentoController',
             'TI\Controller\Equipamentos' => 'TI\Controller\EquipamentosController',
+            'TI\Controller\EquipamentosRestful' => 'TI\Controller\EquipamentosRestfulController',
         ),
     ),
     'acl' => array(
@@ -36,6 +38,15 @@ return array(
                 'TI\Controller\Caracteristicas:store',
                 'TI\Controller\Equipamentos:index',
                 'TI\Controller\Equipamentos:store',
+                'TI\Controller\Equipamentos:deletelicencas',
+                'TI\Controller\Equipamentos:storestorecaracteristica',
+                'TI\Controller\Equipamentos:storelicencas',
+                'TI\Controller\Equipamentos:descricaologica',
+                'TI\Controller\Equipamentos:descricaofisica',
+                'TI\Controller\Equipamentos:equipamento',
+                'TI\Controller\Equipamentos:upload',
+                'TI\Controller\Equipamentos:update',
+                'TI\Controller\Equipamentos:uploadjs',
                 'TI\Controller\Softwares:index',
                 'TI\Controller\Softwares:store',
                 'TI\Controller\TipoEquipamento:index',
@@ -44,8 +55,13 @@ return array(
                 'TI\Controller\Licencas:store',
                 'TI\Controller\Licencas:remove',
                 'TI\Controller\ModeloEquipamento:index',
+                'TI\Controller\ModeloImpressora:index',
+                'TI\Controller\ModeloImpressora:store',
                 'TI\Controller\ModeloEquipamento:store',
                 'TI\Controller\ModeloEquipamento:gettipo',
+                'TI\Controller\Modelos:index',
+                'TI\Controller\Modelos:store',
+                'TI\Controller\Modelos:gettipo',
                 'TI\Controller\Fabricantes:index',
                 'TI\Controller\Fabricantes:store',
                 'TI\Controller\HelpDesk:index',
@@ -56,14 +72,6 @@ return array(
                 'TI\Controller\HelpDesk:close',
                 'TI\Controller\HelpDesk:avaliar',
                 'TI\Controller\HelpDesk:indicadores',
-                'TI\Controller\Equipamentos:storestorecaracteristica',
-                'TI\Controller\Equipamentos:storelicencas',
-                'TI\Controller\Equipamentos:descricaologica',
-                'TI\Controller\Equipamentos:descricaofisica',
-                'TI\Controller\Equipamentos:equipamento',
-                'TI\Controller\Equipamentos:upload',
-                'TI\Controller\Equipamentos:update',
-                'TI\Controller\Equipamentos:uploadjs',
                 'ZFTool\Controller\Diagnostics:run',
             ),
         )
@@ -146,6 +154,40 @@ return array(
                                         'id' => 0
                                     ),
                                 ),
+                            ),
+                        ),
+                    ),
+                    'modelo-impressora' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/modelo-impressora',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\ModeloImpressora',
+                                'action' => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'store' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/store[/:id]',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\ModeloImpressora',
+                                        'action' => 'store',
+                                        'id' => 0
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'modelos' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/modelos-impressora[/:action[/:id]]',
+                            'defaults' => array(
+                                'controller' => 'TI\Controller\Modelos',
+                                'action' => 'index',
                             ),
                         ),
                     ),
@@ -291,10 +333,10 @@ return array(
                             'store' => array(
                                 'type' => 'segment',
                                 'options' => array(
-                                    'route' => '/store[/:id]',
+                                    'route' => '/store[/:licequid]',
                                     'defaults' => array(
-                                        'action' => 'store',
-                                        'id' => 0
+                                        'action' => 'deletelicencas',
+                                        'licequid' => 0
                                     ),
                                 ),
                             ),
@@ -331,11 +373,31 @@ return array(
                                     ),
                                 ),
                             ),
+                            'deletelicencas' => array(
+                                'type' => 'segment',
+                                'options' => array(
+                                    'route' => '/deletelicencas[/:id]',
+                                    'defaults' => array(
+                                        'action' => 'store',
+                                        '' => 0
+                                    ),
+                                ),
+                            ),
                             'update' => array(
                                 'type' => 'literal',
                                 'options' => array(
                                     'route' => '/update',
                                     'defaults' => array(
+                                        'action' => 'update',
+                                    ),
+                                ),
+                            ),
+                            'update-restful' => array(
+                                'type' => 'literal',
+                                'options' => array(
+                                    'route' => '/update-restful',
+                                    'defaults' => array(
+                                        'controller' => 'TI\Controller\EquipamentosRestful',
                                         'action' => 'update',
                                     ),
                                 ),
@@ -396,6 +458,7 @@ return array(
                                     'route' => '/store/caracteristica/:id',
                                     'defaults' => array(
                                         'action' => 'storestorecaracteristica',
+                                        'controller' => 'TI\Controller\Equipamentos',
                                         'id' => 0
                                     ),
                                 ),
@@ -606,11 +669,21 @@ return array(
                 'cache' => 'array',
                 'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
             ),
+            __NAMESPACE__ . '_driver_alternative' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/' . __NAMESPACE__ . '/Entity')
+            ),
             'orm_default' => array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
                 )
-            )
+            ),
+            'orm_alternative' => array(
+                'drivers' => array(
+                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver_alternative'
+                )
+            ),
         ),
     ),
     'view_manager' => array(
@@ -714,7 +787,33 @@ return array(
             ),
         ),
     ),
-                    'console' => array(
+    'navigation' => array(
+        // The DefaultNavigationFactory we configured in (1) uses 'default' as the sitemap key
+        'default' => array(
+            // And finally, here is where we define our page hierarchy
+            'ti-default' => array(
+                'label' => 'Painel',
+                'route' => 'ti',
+                'module' => 'TI\Controller\Index:index',
+                'privilege' => 'TI'
+
+
+// 'pages' => array(
+// 'ti' => array(
+// 'label' => 'T.I.',
+// 'route' => 'ti/helpdesk',
+// 'params' => array('setor' => 2)
+// ),
+// 'projetos-especiais-nav' => array(
+// 'label' => 'Projetos Especiais',
+// 'route' => 'helpdesk',
+// 'params' => array('setor' => 2)
+// )
+// )
+            ),
+        ),
+    ),
+    'console' => array(
         'router' => array(
             'routes' => array(
                 'importar-impressao' => array(

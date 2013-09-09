@@ -233,5 +233,20 @@ class EquipamentosController extends AbstractActionController {
         }
         return new JsonModel(array());
     }
+    
+      public function deletelicencasAction()
+    {
+        list($equid,$licid) = explode('-',$this->params()->fromRoute('licequid'));
+        $equipamento = new Equipamento($this->getEntityManager());
+        $licencas = new Licencas($this->getEntityManager());
+        $equip = $equipamento->getById($equid);
+        $equip->setEntitymanaget($this->getEntityManager());;
+        $lic = $licencas->getById($licid);
+        $lic->setEntitymanaget($this->getEntityManager());;
+        $equip->getLicencas()->remoteElement($lic);
+        $lic->getEquipamento()->removeElement($equip);
+        $this->redirect()->toRoute('ti/equipamentos/storelicencas', array('id' => $equid));
+        
+    }
 
 }
