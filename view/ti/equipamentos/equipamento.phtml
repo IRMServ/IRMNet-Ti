@@ -131,10 +131,11 @@
                                     <?php echo $iterator->getSoftwaresFk()->getSoftware(); ?>
                                 </td>
                                 <td>
-                                    <?php echo $iterator->getLicenca(); ?>
+                                    <?php echo $iterator->getLicenca();
+                                    $licequid = $iterator->getLicenca()->getIdlicencas().'-'.$primeiro->getEquipamentoFk()->getIdequipamento();?>
                                 </td>
                                 <td>
-                                    <?php echo $this->url(); ?>
+                                <a href="<?php echo $this->url('ti/equipamentos/deletelicencas',array('licequid'=>$licequid)); ?>"   > <i class="icon-pencil">Edit</i></a> 
                                 </td>
                             </tr>
                         <?php endforeach; ?>
