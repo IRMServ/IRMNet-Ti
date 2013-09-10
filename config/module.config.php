@@ -333,10 +333,10 @@ return array(
                             'store' => array(
                                 'type' => 'segment',
                                 'options' => array(
-                                    'route' => '/store[/:licequid]',
+                                    'route' => '/store[/:id]',
                                     'defaults' => array(
-                                        'action' => 'deletelicencas',
-                                        'licequid' => 0
+                                        'action' => 'store',
+                                        'id' => 0
                                     ),
                                 ),
                             ),
@@ -376,10 +376,10 @@ return array(
                             'deletelicencas' => array(
                                 'type' => 'segment',
                                 'options' => array(
-                                    'route' => '/deletelicencas[/:id]',
+                                    'route' => '/deletelicencas[/:licequid]',
                                     'defaults' => array(
                                         'action' => 'store',
-                                        '' => 0
+                                        'licequid' => 0
                                     ),
                                 ),
                             ),
