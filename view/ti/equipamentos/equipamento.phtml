@@ -132,7 +132,7 @@
                                 </td>
                                 <td>
                                     <?php echo $iterator->getLicenca();
-                                    $licequid = $iterator->getLicenca()->getIdlicencas().'-'.$primeiro->getEquipamentoFk()->getIdequipamento();?>
+                                    $licequid = $iterator->getIdlicencas().'-'.$primeiro->getEquipamentoFk()->getIdequipamento();?>
                                 </td>
                                 <td>
                                 <a href="<?php echo $this->url('ti/equipamentos/deletelicencas',array('licequid'=>$licequid)); ?>"   > <i class="icon-pencil">Edit</i></a> 
